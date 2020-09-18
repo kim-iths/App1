@@ -10,6 +10,9 @@
     android:orientation="vertical">
 
     <GridView
+        android:verticalSpacing="4dp"
+        android:horizontalSpacing="4dp"
+        android:gravity="center"
         android:stretchMode="columnWidth"
         android:numColumns="1"
         android:orientation="vertical"

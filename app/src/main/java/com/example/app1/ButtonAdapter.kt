@@ -6,13 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
-import android.widget.ImageView
 
 class ButtonAdapter(context: Context, val buttonList: MutableList<Button>): BaseAdapter() {
 
     val inflater = LayoutInflater.from(context)
-
-
 
     override fun getCount(): Int {
 //        TODO("Not yet implemented")
@@ -32,9 +29,9 @@ class ButtonAdapter(context: Context, val buttonList: MutableList<Button>): Base
 
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
 
-        val rowView = inflater.inflate(R.layout.button_fill, p2, false)
+        val rowView = inflater.inflate(R.layout.image_square, p2, false)
 
-        val button = rowView.findViewById<ImageView>(R.id.button)
+        //val button = rowView.findViewById<ImageView>(R.id.button)
         //button.setImageResource(R.drawable.yellow)
 
         return rowView

@@ -25,9 +25,9 @@ class MainActivity : AppCompatActivity() {
 
         val buttonList = mutableListOf<Button>()
 
-//        for(i in 1..4){
+        //for(i in 1..4){
             buttonList.add(Button(this))
-//        }
+        //}
 
         grid = findViewById(R.id.grid)
         adapter = ButtonAdapter(this, buttonList)
