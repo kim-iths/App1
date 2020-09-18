@@ -17,48 +17,55 @@ class MainActivity : AppCompatActivity() {
     lateinit var grid: GridView
     lateinit var adapter: ButtonAdapter
     var amountToAdd = 3
+    var random = 0
+    lateinit var buttonList: MutableList<ColorButton>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val buttonList = mutableListOf<Button>()
-
-        buttonList.add(Button(this))
+        buttonList = mutableListOf()
+        buttonList.add(ColorButton(R.color.colorPrimary))
 
         grid = findViewById(R.id.grid)
         adapter = ButtonAdapter(this, buttonList)
         grid.adapter = adapter
 
+        //Log.e("!!!", "${buttonList.size}")
+
         grid.setOnItemClickListener { adapterView, view, i, l ->
+
             Log.e("!!!", "$i")
             ++grid.numColumns
             for(j in 1..amountToAdd){
-                buttonList.add(Button(this))
+                buttonList.add(ColorButton(R.color.colorPrimary))
             }
+            //nextRound((amountToAdd-1)*(amountToAdd-1))
+            //buttonList[random].color = R.color.colorPrimaryDark
+
             amountToAdd += 2
             adapter.notifyDataSetChanged()
         }
 
-//        makeButtons(4)
+        nextRound(amountToAdd)
     }
 
-    fun makeButtons(count: Int){
-
-        val random = Random.nextInt(0,count+1)
+    fun nextRound(count: Int){
+        random = Random.nextInt(0,count)
         Log.e("!!!", "$random")
 
-        for(i in 0..count-1){
-            grid.addView(Button(this))
+
+        //for(i in 0..count-1){
+
+
+            //buttonList.add(ColorButton(R.color.colorPrimary))
             //grid.getChildAt(i).setBackgroundColor(resources.getColor(R.color.colorPrimaryDark))
-        }
+        //}
 
+        //grid.getChildAt(random).setBackgroundColor(resources.getColor(R.color.colorPrimaryDark))
 
-        grid.getChildAt(random).setBackgroundColor(resources.getColor(R.color.colorPrimary))
-
-        grid.getChildAt(random).setOnClickListener {
-            makeButtons(count+2)
-
-        }
+        //grid.getChildAt(random).setOnClickListener {
+            //makeButtons(count+2)
+        //}
     }
 }
