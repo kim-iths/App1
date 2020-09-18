@@ -11,30 +11,15 @@ class ButtonAdapter(context: Context, val buttonList: MutableList<Button>): Base
 
     val inflater = LayoutInflater.from(context)
 
-    override fun getCount(): Int {
-//        TODO("Not yet implemented")
-        return buttonList.size
-    }
+    override fun getCount() = buttonList.size
 
-    override fun getItem(p0: Int): Any {
-//        TODO("Not yet implemented")
-        return buttonList[p0]
-    }
+    override fun getItem(p0: Int) = buttonList[p0]
 
-    override fun getItemId(p0: Int): Long {
-//        TODO("Not yet implemented")
-        return p0.toLong()
-    }
-
+    override fun getItemId(p0: Int) = p0.toLong()
 
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-
         val rowView = inflater.inflate(R.layout.image_square, p2, false)
-
-        //val button = rowView.findViewById<ImageView>(R.id.button)
-        //button.setImageResource(R.drawable.yellow)
 
         return rowView
     }
-
 }

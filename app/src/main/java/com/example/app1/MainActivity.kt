@@ -22,18 +22,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val buttonList = mutableListOf<Button>()
 
-        //for(i in 1..4){
-            buttonList.add(Button(this))
-        //}
+        buttonList.add(Button(this))
 
         grid = findViewById(R.id.grid)
         adapter = ButtonAdapter(this, buttonList)
         grid.adapter = adapter
-
-
 
         grid.setOnItemClickListener { adapterView, view, i, l ->
             Log.e("!!!", "$i")
