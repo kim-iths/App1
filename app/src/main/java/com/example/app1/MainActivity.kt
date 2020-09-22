@@ -2,6 +2,8 @@ package com.example.app1
 
 import android.app.ActionBar
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
@@ -11,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.get
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +22,9 @@ class MainActivity : AppCompatActivity() {
     var amountToAdd = 3
     var random = 0
     var round = 1;
+    var colorDark = 0
+    var colorMedium = 0
+    var colorLight = 0
 
     lateinit var buttonList: MutableList<ColorButton>
 
@@ -26,20 +32,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         buttonList = mutableListOf()
-        buttonList.add(ColorButton(R.color.colorPrimaryDark))
 
+        //buttonList.add(ColorButton(R.color.colorPrimaryDark))
         grid = findViewById(R.id.grid)
         val resetButton = findViewById<Button>(R.id.buttonReset)
+        val startText = findViewById<TextView>(R.id.textViewStart)
         adapter = ButtonAdapter(this, buttonList)
         grid.adapter = adapter
 
-        resetButton.setOnClickListener {
-            reset()
-        }
+        reset()
+
+        resetButton.setOnClickListener { reset() }
 
         grid.setOnItemClickListener { adapterView, view, i, l ->
+            if(startText.visibility == TextView.VISIBLE) startText.visibility = TextView.GONE
 
             if(i == random){
                 Log.e("!!!", "$i")
@@ -54,28 +61,59 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun nextRound(count: Int) {
-        buttonList[random].color = R.color.colorPrimary
+        buttonList[random].color = colorMedium
 
         for (i in 1..amountToAdd) {
-            buttonList.add(ColorButton(R.color.colorPrimary))
+            buttonList.add(ColorButton(colorMedium))
         }
 
         random = Random.nextInt(0, (count) * (count))
         Log.e("!!!", "count: $count, random: $random")
-        buttonList[random].color = R.color.colorPrimaryDark
+        buttonList[random].color = colorDark
         adapter.notifyDataSetChanged()
         amountToAdd += 2
     }
 
     fun reset(){
+        val colorScheme = Random.nextInt(0,5)
+
+        when(colorScheme){
+            0 -> {
+                colorDark = R.color.colorScheme1Dark
+                colorMedium = R.color.colorScheme1Medium
+                colorLight = R.color.colorScheme1Light
+            }
+            1 -> {
+                colorDark = R.color.colorScheme2Dark
+                colorMedium = R.color.colorScheme2Medium
+                colorLight = R.color.colorScheme2Light
+            }
+            2 -> {
+                colorDark = R.color.colorScheme3Dark
+                colorMedium = R.color.colorScheme3Medium
+                colorLight = R.color.colorScheme3Light
+            }
+            3 -> {
+                colorDark = R.color.colorScheme4Dark
+                colorMedium = R.color.colorScheme4Medium
+                colorLight = R.color.colorScheme4Light
+            }
+            4 -> {
+                colorDark = R.color.colorPrimaryDark
+                colorMedium = R.color.colorPrimary
+                colorLight = R.color.colorPrimary
+            }
+        }
+
+        textViewStart.visibility = TextView.VISIBLE
         grid.numColumns = 1
         round = 1
         amountToAdd = 3
         random = 0
-        for(i in 0 until buttonList.size-1)buttonList.removeLast()
-        buttonList[0].color = R.color.colorPrimaryDark
+        for(i in 0 until buttonList.size)buttonList.removeLast()
+        buttonList.add(ColorButton(colorDark))
+        adapter.notifyDataSetChanged()
     }
 }
-
 
 //TODO("In harder difficulties, make the correct button change place after a certain amount of time")

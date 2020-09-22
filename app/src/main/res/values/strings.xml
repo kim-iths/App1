@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">App1</string>
+    <string name="app_name">Colors</string>
     <string name="toast_game_over">Game over!</string>
+    <string name="press_to_start">Press here to start</string>
 </resources>
