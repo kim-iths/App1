@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: ButtonAdapter
     var amountToAdd = 3
     var random = 0
+    var round = 1
     lateinit var buttonList: MutableList<ColorButton>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         buttonList = mutableListOf()
-        buttonList.add(ColorButton(R.color.colorPrimary))
+        buttonList.add(ColorButton(R.color.colorPrimaryDark))
 
         grid = findViewById(R.id.grid)
         adapter = ButtonAdapter(this, buttonList)
@@ -43,17 +44,19 @@ class MainActivity : AppCompatActivity() {
             //nextRound((amountToAdd-1)*(amountToAdd-1))
             //buttonList[random].color = R.color.colorPrimaryDark
 
-            amountToAdd += 2
+            round += 1
+            buttonList[random].color = R.color.colorPrimary
+            nextRound(round)
             adapter.notifyDataSetChanged()
+            amountToAdd += 2
         }
 
-        nextRound(amountToAdd)
     }
 
     fun nextRound(count: Int){
-        random = Random.nextInt(0,count)
-        Log.e("!!!", "$random")
-
+        random = Random.nextInt(0,(count) * (count))
+        Log.e("!!!", "count: $count, random: $random")
+        buttonList[random].color = R.color.colorPrimaryDark
 
         //for(i in 0..count-1){
 
