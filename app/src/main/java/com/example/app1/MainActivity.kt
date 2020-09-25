@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: ButtonAdapter
     var amountToAdd = 3
     var random = 0
-    var round = 1;
+    var round = 1
     var colorDark = 0
     var colorMedium = 0
     var colorLight = 0
@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        buttonList = mutableListOf()
-
-        //buttonList.add(ColorButton(R.color.colorPrimaryDark))
-        grid = findViewById(R.id.grid)
         val resetButton = findViewById<Button>(R.id.buttonReset)
         val startText = findViewById<TextView>(R.id.textViewStart)
+        grid = findViewById(R.id.grid)
+
+        buttonList = mutableListOf()
+
         adapter = ButtonAdapter(this, buttonList)
         grid.adapter = adapter
 
@@ -75,9 +75,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun reset(){
-        val colorScheme = Random.nextInt(0,5)
 
-        when(colorScheme){
+        when(Random.nextInt(0,5)){
             0 -> {
                 colorDark = R.color.colorScheme1Dark
                 colorMedium = R.color.colorScheme1Medium
@@ -115,5 +114,8 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 }
-
+//TODO("Difficulty selection")
 //TODO("In harder difficulties, make the correct button change place after a certain amount of time")
+//TODO("Main menu?")
+//TODO("Timer at the top of the screen that starts after pressing the first button")
+//TODO("Score counter either underneath the grid or next to the timer")

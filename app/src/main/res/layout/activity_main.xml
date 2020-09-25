@@ -8,20 +8,16 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <GridView
             android:id="@+id/grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:horizontalSpacing="2dp"
+            android:horizontalSpacing="1dp"
             android:numColumns="1"
-            android:orientation="vertical"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="2dp" />
+            android:verticalSpacing="1dp" />
 
         <TextView
             android:textStyle="bold"
@@ -41,6 +37,5 @@
         android:layout_alignParentBottom="true"
         android:backgroundTint="@color/colorAccent"
         android:text="reset" />
-
 
 </RelativeLayout>
