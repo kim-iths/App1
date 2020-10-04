@@ -1,30 +1,25 @@
 package com.example.app1
 
-import android.app.ActionBar
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.DisplayMetrics
-import android.util.Log
-import android.view.View
-import android.view.ViewGroup
+import android.os.CountDownTimer
+import android.os.SystemClock
 import android.widget.*
-import androidx.core.view.get
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     lateinit var grid: GridView
     lateinit var adapter: ButtonAdapter
+    lateinit var scoreTextView: TextView
+    lateinit var timerTextView: Chronometer
     var amountToAdd = 3
     var random = 0
     var round = 1
     var colorDark = 0
     var colorMedium = 0
     var colorLight = 0
+    var timerActive = false
 
     lateinit var buttonList: MutableList<ColorButton>
 
@@ -35,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         val resetButton = findViewById<Button>(R.id.buttonReset)
         val startText = findViewById<TextView>(R.id.textViewStart)
         grid = findViewById(R.id.grid)
+        scoreTextView = findViewById(R.id.textViewScore)
+        timerTextView = findViewById(R.id.textViewTimer)
 
         buttonList = mutableListOf()
 
@@ -47,9 +44,15 @@ class MainActivity : AppCompatActivity() {
 
         grid.setOnItemClickListener { adapterView, view, i, l ->
             if(startText.visibility == TextView.VISIBLE) startText.visibility = TextView.GONE
+            if(round == 1){
+                textViewTimer.base = SystemClock.elapsedRealtime()
+                timerTextView.start()
+                timerActive = true
+            }
 
             if(i == random){
-                Log.e("!!!", "$i")
+                //Log.e("!!!", "$i")
+                scoreTextView.text = round.toString()
                 ++grid.numColumns
                 round += 1
                 nextRound(round)
@@ -63,19 +66,15 @@ class MainActivity : AppCompatActivity() {
     fun nextRound(count: Int) {
         buttonList[random].color = colorMedium
 
-        for (i in 1..amountToAdd) {
-            buttonList.add(ColorButton(colorMedium))
-        }
+        for (i in 1..amountToAdd) buttonList.add(ColorButton(colorMedium))
 
         random = Random.nextInt(0, (count) * (count))
-        Log.e("!!!", "count: $count, random: $random")
         buttonList[random].color = colorDark
         adapter.notifyDataSetChanged()
         amountToAdd += 2
     }
 
     fun reset(){
-
         when(Random.nextInt(0,5)){
             0 -> {
                 colorDark = R.color.colorScheme1Dark
@@ -104,18 +103,35 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        if(timerActive){
+            timerActive = false
+            textViewTimer.base = SystemClock.elapsedRealtime()
+            textViewTimer.stop()
+        }
+
         textViewStart.visibility = TextView.VISIBLE
         grid.numColumns = 1
         round = 1
         amountToAdd = 3
         random = 0
+        scoreTextView.text = "0"
+
         for(i in 0 until buttonList.size)buttonList.removeLast()
         buttonList.add(ColorButton(colorDark))
+        scoreTextView.setTextColor(colorDark)
         adapter.notifyDataSetChanged()
     }
 }
+//TODO("Add sounds")
+//TODO("Add animations/graphics")
+//TODO("User selection? Guest player?")
+//TODO("Game over screen")
 //TODO("Difficulty selection")
 //TODO("In harder difficulties, make the correct button change place after a certain amount of time")
-//TODO("Main menu?")
+//TODO("Main menu")
+
+// Done but cannot be used as as a factor for score
 //TODO("Timer at the top of the screen that starts after pressing the first button")
+
+// Done
 //TODO("Score counter either underneath the grid or next to the timer")

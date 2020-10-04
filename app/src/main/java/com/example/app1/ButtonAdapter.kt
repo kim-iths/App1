@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
+import androidx.recyclerview.widget.RecyclerView
 
 class ButtonAdapter(val context: Context, var listButtons: MutableList<ColorButton>): BaseAdapter() {
 
@@ -23,6 +24,7 @@ class ButtonAdapter(val context: Context, var listButtons: MutableList<ColorButt
         rowView.setBackgroundColor(context.resources.getColor(listButtons[p0].color))
         return rowView
     }
+
 }
 
 class ColorButton(var color: Int){
