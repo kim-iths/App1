@@ -7,4 +7,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MainMenuButton">
+        <item name="android:textColor">@color/colorScheme4Light</item>
+        <item name="android:layout_width">140dp</item>
+        <item name="backgroundTint">#303030</item>
+    </style>
+
 </resources>

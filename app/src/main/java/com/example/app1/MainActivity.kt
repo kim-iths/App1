@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.hide()
+
         val resetButton = findViewById<Button>(R.id.buttonReset)
         val startText = findViewById<TextView>(R.id.textViewStart)
         grid = findViewById(R.id.grid)
@@ -45,19 +47,19 @@ class MainActivity : AppCompatActivity() {
         grid.setOnItemClickListener { adapterView, view, i, l ->
             if(startText.visibility == TextView.VISIBLE) startText.visibility = TextView.GONE
             if(round == 1){
-                textViewTimer.base = SystemClock.elapsedRealtime()
+                timerTextView.base = SystemClock.elapsedRealtime()
                 timerTextView.start()
                 timerActive = true
             }
 
             if(i == random){
-                //Log.e("!!!", "$i")
                 scoreTextView.text = round.toString()
                 ++grid.numColumns
                 round += 1
                 nextRound(round)
             }else{
-                Toast.makeText(this, getString(R.string.toast_game_over), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.toast_game_over) + " Your time: "
+                        + ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble()/1000), Toast.LENGTH_SHORT).show()
                 reset()
             }
         }
@@ -105,8 +107,8 @@ class MainActivity : AppCompatActivity() {
 
         if(timerActive){
             timerActive = false
-            textViewTimer.base = SystemClock.elapsedRealtime()
-            textViewTimer.stop()
+            timerTextView.base = SystemClock.elapsedRealtime()
+            timerTextView.stop()
         }
 
         textViewStart.visibility = TextView.VISIBLE
@@ -128,6 +130,8 @@ class MainActivity : AppCompatActivity() {
 //TODO("Game over screen")
 //TODO("Difficulty selection")
 //TODO("In harder difficulties, make the correct button change place after a certain amount of time")
+
+// In progress
 //TODO("Main menu")
 
 // Done but cannot be used as as a factor for score
