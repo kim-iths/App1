@@ -66,10 +66,12 @@ class FragmentGame : Fragment(){
                 round += 1
                 nextRound(round)
             }else{ // Wrong square
-                /* Toast.makeText(activity, getString(R.string.toast_game_over) + " Your time: "
-                        + ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble()/1000), Toast.LENGTH_SHORT).show()
-                reset()*/
-                (activity as GameActivity).gameOver()
+                var context = (activity as GameActivity)
+
+                context.score = round
+                context.time = ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble()/1000)
+
+                context.gameOver()
             }
         }
 
@@ -131,7 +133,6 @@ class FragmentGame : Fragment(){
 
         for(i in 0 until buttonList.size)buttonList.removeLast()
         buttonList.add(ColorButton(colorDark))
-        //scoreTextView.setTextColor(colorDark)
         adapter.notifyDataSetChanged()
     }
 

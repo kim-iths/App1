@@ -16,7 +16,6 @@
     <style name="GameInfoTextView">
         <item name="android:textColor">#ffffff</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">true</item>
     </style>
 
 </resources>

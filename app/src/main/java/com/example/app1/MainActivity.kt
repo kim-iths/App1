@@ -127,6 +127,8 @@ class MainActivity : AppCompatActivity() {
 //TODO("Add sounds")
 //TODO("Add animations/graphics")
 //TODO("User selection? Guest player?")
+
+// Done
 //TODO("Game over screen")
 //TODO("Difficulty selection")
 //TODO("In harder difficulties, make the correct button change place after a certain amount of time")
@@ -134,7 +136,7 @@ class MainActivity : AppCompatActivity() {
 // In progress
 //TODO("Main menu")
 
-// Done but cannot be used as as a factor for score
+// Done
 //TODO("Timer at the top of the screen that starts after pressing the first button")
 
 // Done

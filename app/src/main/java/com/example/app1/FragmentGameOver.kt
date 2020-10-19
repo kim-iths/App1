@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 class FragmentGameOver : Fragment(){
@@ -19,6 +20,13 @@ class FragmentGameOver : Fragment(){
 
         val retryButton = view.findViewById<Button>(R.id.buttonRetry)
         val exitButton = view.findViewById<Button>(R.id.buttonExit)
+
+        val scoreTextView = view.findViewById<TextView>(R.id.textViewScore)
+        val timeTextView = view.findViewById<TextView>(R.id.textViewTime)
+
+        val context = (activity as GameActivity)
+        scoreTextView.text = "Score: " + context.score.toString()
+        timeTextView.text = "Time: " + context.time.toString()
 
         retryButton.setOnClickListener { (activity as GameActivity).startGame() }
         exitButton.setOnClickListener { (activity as GameActivity).finish() }
