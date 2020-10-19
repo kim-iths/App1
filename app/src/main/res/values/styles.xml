@@ -8,9 +8,15 @@
     </style>
 
     <style name="MainMenuButton">
-        <item name="android:textColor">@color/colorScheme4Light</item>
-        <item name="android:layout_width">140dp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:layout_width">160dp</item>
         <item name="backgroundTint">#303030</item>
+    </style>
+
+    <style name="GameInfoTextView">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
 </resources>

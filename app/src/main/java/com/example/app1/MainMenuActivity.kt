@@ -20,7 +20,7 @@ class MainMenuActivity : AppCompatActivity() {
 
 
         startButton.setOnClickListener {
-            val i = Intent(this, MainActivity::class.java)
+            val i = Intent(this, GameActivity::class.java)
             startActivity(i)
         }
 

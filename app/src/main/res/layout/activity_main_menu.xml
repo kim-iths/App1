@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainMenuActivity"
-    android:background="#60a0c0">
+    android:background="@color/colorScheme2Medium">
 
     <TextView
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:id="@+id/buttonStart"
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
-        android:text="Start game"
+        android:text="@string/start_game"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -35,7 +35,7 @@
         android:id="@+id/buttonHighscores"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Highscores"
+        android:text="@string/highscores"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
@@ -45,7 +45,7 @@
         android:id="@+id/buttonTutorial"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Tutorial"
+        android:text="@string/tutorial"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonHighscores" />
@@ -55,7 +55,7 @@
         android:id="@+id/buttonExit"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Exit"
+        android:text="@string/exit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonTutorial" />
