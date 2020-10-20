@@ -2,17 +2,21 @@ package com.example.app1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.SystemClock
-import android.widget.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.random.Random
+import com.example.app1.fragments.FragmentChoosePlayer
+import com.example.app1.fragments.FragmentMainMenu
 
 class MainActivity : AppCompatActivity() {
+
+    val playerList = mutableListOf<Player>()
+    lateinit var currentPlayer: Player
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val testPlayer = Player("kimpi")
+        playerList.add(testPlayer)
+        currentPlayer = playerList[0]
 
         supportActionBar?.hide()
         val transaction = supportFragmentManager.beginTransaction()

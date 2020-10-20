@@ -24,7 +24,7 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:elevation="4dp"
         android:background="@drawable/button_background"
@@ -40,16 +40,25 @@
             android:padding="8dp"
             android:drawablePadding="4dp"
             android:text="@string/back"
-            android:drawableStart="@drawable/arrow_left"
+            android:drawableStart="@drawable/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/buttonAddPlayer"
+            android:padding="8dp"
+            android:src="@drawable/icon_add"
+            android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <ListView
+            android:layout_below="@id/buttonBack"
             android:id="@+id/listPlayers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:orientation="vertical"

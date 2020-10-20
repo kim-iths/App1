@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.app1.fragments.FragmentGame
+import com.example.app1.fragments.FragmentGameOver
 
 class GameActivity : AppCompatActivity(){
 
@@ -32,7 +34,7 @@ class GameActivity : AppCompatActivity(){
     fun gameOver(){
         val transaction = supportFragmentManager.beginTransaction()
 
-        transaction.replace(R.id.container,FragmentGameOver(), "fragment")
+        transaction.replace(R.id.container, FragmentGameOver(), "fragment")
         transaction.commit()
     }
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:drawableStart="@drawable/icon_player"
+        android:drawableTint="@color/colorScheme3Light"
+        android:textColor="@color/colorScheme3Light"
+        android:text="Player"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:id="@+id/textViewPlayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

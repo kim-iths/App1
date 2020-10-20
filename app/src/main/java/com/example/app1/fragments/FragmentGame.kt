@@ -1,4 +1,4 @@
-package com.example.app1
+package com.example.app1.fragments
 
 import android.os.Bundle
 import android.os.SystemClock
@@ -7,6 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.example.app1.ButtonAdapter
+import com.example.app1.ColorButton
+import com.example.app1.GameActivity
+import com.example.app1.R
 import kotlin.random.Random
 
 class FragmentGame : Fragment(){
