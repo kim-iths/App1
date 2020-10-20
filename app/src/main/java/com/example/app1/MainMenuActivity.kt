@@ -14,31 +14,12 @@ class MainMenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_main_menu)
 
-        supportActionBar?.hide()
 
-        val currentPlayerButton = findViewById<RelativeLayout>(R.id.buttonCurrentPlayer)
-        val currentPlayerTextView = findViewById<TextView>(R.id.textViewCurrentPlayer)
-        val playButton = findViewById<RelativeLayout>(R.id.buttonPlay)
-        val highscoresButton = findViewById<RelativeLayout>(R.id.buttonHighscores)
-        val tutorialButton = findViewById<RelativeLayout>(R.id.buttonTutorial)
-        val exitButton = findViewById<RelativeLayout>(R.id.buttonExit)
 
-        val testPlayer = Player("kimpi")
-
-        currentPlayerTextView.text = resources.getText(R.string.current_player).toString() + " " + testPlayer.name
-
-        currentPlayerButton.setOnClickListener { }
-
-        playButton.setOnClickListener {
-            val i = Intent(this, GameActivity::class.java)
-            i.putExtra("currentPlayer", testPlayer)
-            startActivity(i)
-        }
-
-        highscoresButton.setOnClickListener { }
-
-        tutorialButton.setOnClickListener { }
-
-        exitButton.setOnClickListener { exitProcess(0) }
     }
+
+
+
+
+
 }

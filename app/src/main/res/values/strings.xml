@@ -17,4 +17,5 @@
     <string name="score">Score:</string>
     <string name="time">Time:</string>
     <string name="current_player">Current player:</string>
+    <string name="settings">Settings</string>
 </resources>

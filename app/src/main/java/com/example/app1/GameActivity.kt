@@ -1,13 +1,9 @@
 package com.example.app1
 
-import android.graphics.drawable.DrawableContainer
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity(){
 
@@ -21,7 +17,6 @@ class GameActivity : AppCompatActivity(){
         supportActionBar?.hide()
 
         val currentPlayer = intent.getSerializableExtra("currentPlayer") as Player
-
 
         startGame()
 
@@ -53,6 +48,4 @@ class GameActivity : AppCompatActivity(){
 
         transaction.commit()
     }
-
-
 }
