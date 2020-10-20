@@ -43,11 +43,11 @@ class FragmentMainMenu : Fragment(){
             startActivity(i)
         }
 
-        highscoresButton.setOnClickListener { }
+        highscoresButton.setOnClickListener { context.highscores() }
 
         tutorialButton.setOnClickListener { }
 
-        settingsButton.setOnClickListener {  }
+        settingsButton.setOnClickListener { }
 
         return view
     }

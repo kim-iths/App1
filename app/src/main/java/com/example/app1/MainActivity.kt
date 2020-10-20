@@ -3,6 +3,7 @@ package com.example.app1
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.app1.fragments.FragmentChoosePlayer
+import com.example.app1.fragments.FragmentHighscores
 import com.example.app1.fragments.FragmentMainMenu
 
 class MainActivity : AppCompatActivity() {
@@ -42,7 +43,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun highscores(){
-
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, FragmentHighscores(),"fragment")
+        transaction.commit()
     }
 
     fun tutorial(){

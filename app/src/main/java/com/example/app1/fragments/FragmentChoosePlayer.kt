@@ -16,7 +16,6 @@ class FragmentChoosePlayer : Fragment(){
 
     lateinit var context: MainActivity
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

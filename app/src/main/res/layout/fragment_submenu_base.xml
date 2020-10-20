@@ -14,13 +14,14 @@
         android:layout_height="0dp">
 
         <TextView
+            android:id="@+id/titleSubmenu"
             android:focusable="false"
             android:clickable="false"
             android:textColor="@android:color/white"
             android:textSize="32sp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:text="Choose player"
+            android:text="Title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
@@ -44,20 +45,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:drawableStartCompat="@drawable/back" />
-
-        <ImageView
-            android:id="@+id/buttonAddPlayer"
-            android:padding="8dp"
-            android:src="@drawable/icon_add"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <ListView
-            android:layout_below="@id/buttonBack"
-            android:id="@+id/listPlayers"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
     </RelativeLayout>
 

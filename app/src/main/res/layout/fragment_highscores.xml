@@ -14,13 +14,14 @@
         android:layout_height="0dp">
 
         <TextView
+            android:id="@+id/titleSubmenu"
             android:focusable="false"
             android:clickable="false"
             android:textColor="@android:color/white"
             android:textSize="32sp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:text="Choose player"
+            android:text="Highscores"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
@@ -29,7 +30,7 @@
         android:orientation="vertical"
         android:elevation="4dp"
         android:background="@drawable/button_background"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
@@ -45,17 +46,45 @@
             android:layout_height="wrap_content"
             app:drawableStartCompat="@drawable/back" />
 
-        <ImageView
-            android:id="@+id/buttonAddPlayer"
-            android:padding="8dp"
-            android:src="@drawable/icon_add"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_below="@id/buttonBack"
+            android:orientation="horizontal"
+            android:id="@+id/buttonRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:textColor="@color/colorScheme3Light"
+                android:text="@string/easy"
+                style="?buttonBarButtonStyle"
+                android:id="@+id/buttonShowScoresEasy"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:textColor="@color/colorScheme4Light"
+                android:text="@string/medium"
+                style="?buttonBarButtonStyle"
+                android:id="@+id/buttonShowScoresMedium"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:textColor="@color/colorScheme1Light"
+                android:text="@string/hard"
+                style="?buttonBarButtonStyle"
+                android:id="@+id/buttonShowScoresHard"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
         <ListView
-            android:layout_below="@id/buttonBack"
-            android:id="@+id/listPlayers"
+            android:layout_below="@id/buttonRow"
+            android:id="@+id/listViewHighscores"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

@@ -39,7 +39,6 @@ class FragmentGame : Fragment(){
 
         val view = inflater.inflate(R.layout.fragment_game, container, false)
 
-        //val resetButton = view.findViewById<Button>(R.id.buttonReset)
         grid = view.findViewById(R.id.grid)
         scoreTextView = view.findViewById(R.id.textViewScore)
         timerTextView = view.findViewById(R.id.textViewTimer)
@@ -51,8 +50,6 @@ class FragmentGame : Fragment(){
         grid.adapter = adapter
 
         reset()
-
-        //resetButton.setOnClickListener { reset() }
 
         // Checks whether or not the correct square was pressed
         grid.setOnItemClickListener { adapterView, view, i, l ->
