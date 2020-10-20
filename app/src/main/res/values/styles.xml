@@ -18,4 +18,25 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="MainMenuButtonRemastered">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">180dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:clipToPadding">true</item>
+    </style>
+
+    <style name="MainMenuButtonText">
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

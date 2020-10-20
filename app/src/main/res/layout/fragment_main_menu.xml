@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:padding="4dp"
+    android:background="@color/colorScheme2Medium"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:textColor="@android:color/white"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="48dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="48sp"
+        android:text="@string/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/topRow"
+        android:orientation="horizontal"
+        android:layout_above="@id/bottomRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/buttonPlay"
+            android:foreground="?selectableItemBackground"
+            style="@style/MainMenuButtonRemastered">
+
+            <TextView
+                style="@style/MainMenuButtonText"
+                android:textColor="@color/colorScheme3Light"
+                android:drawableTint="@color/colorScheme3Light"
+                android:drawableEnd="@drawable/icon_play"
+                android:text="@string/play"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:foreground="?selectableItemBackground"
+            android:id="@+id/buttonHighscores"
+            style="@style/MainMenuButtonRemastered">
+
+            <TextView
+                android:textColor="@color/colorScheme4Light"
+                android:drawableTint="@color/colorScheme4Light"
+                android:drawableEnd="@drawable/icon_highscores"
+                android:text="@string/highscores"
+                style="@style/MainMenuButtonText"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:id="@+id/bottomRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:foreground="?selectableItemBackground"
+            android:id="@+id/buttonTutorial"
+            style="@style/MainMenuButtonRemastered">
+
+            <TextView
+                android:textColor="@color/colorScheme2Medium"
+                android:drawableTint="@color/colorScheme2Medium"
+                style="@style/MainMenuButtonText"
+                android:drawableEnd="@drawable/icon_tutorial"
+                android:text="@string/tutorial"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:foreground="?selectableItemBackground"
+            android:id="@+id/buttonExit"
+            style="@style/MainMenuButtonRemastered">
+
+            <TextView
+                android:textColor="@color/colorScheme1Medium"
+                android:drawableTint="@color/colorScheme1Medium"
+                android:drawableEnd="@drawable/icon_exit"
+                android:text="@string/exit"
+                style="@style/MainMenuButtonText"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -59,7 +59,6 @@ class FragmentGame : Fragment(){
                 timerActive = true
             }
 
-
             if(i == random){ // Correct square
                 scoreTextView.text = round.toString()
                 ++grid.numColumns
