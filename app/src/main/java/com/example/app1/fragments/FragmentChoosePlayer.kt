@@ -39,6 +39,12 @@ class FragmentChoosePlayer : Fragment(){
 
         backButton.setOnClickListener { returnToMainMenu() }
         addPlayerButton.setOnClickListener { addPlayer() }
+        playerListView.setOnItemClickListener { adapterView, view, i, l ->
+
+            context.currentPlayer = context.playerList[i]
+            returnToMainMenu()
+        }
+
         outside0.setOnClickListener { returnToMainMenu() }
         outside1.setOnClickListener { returnToMainMenu() }
 
