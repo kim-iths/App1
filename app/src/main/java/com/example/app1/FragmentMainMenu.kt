@@ -19,6 +19,8 @@ class FragmentMainMenu : Fragment(){
 
         val view = inflater.inflate(R.layout.fragment_main_menu, container, false)
 
+        val context = (activity as MainActivity)
+
         val currentPlayerButton = view.findViewById<RelativeLayout>(R.id.buttonCurrentPlayer)
         val currentPlayerTextView = view.findViewById<TextView>(R.id.textViewCurrentPlayer)
         val playButton = view.findViewById<RelativeLayout>(R.id.buttonPlay)
@@ -30,7 +32,7 @@ class FragmentMainMenu : Fragment(){
 
         currentPlayerTextView.text = resources.getText(R.string.current_player).toString() + " " + testPlayer.name
 
-        currentPlayerButton.setOnClickListener { }
+        currentPlayerButton.setOnClickListener { context.choosePlayer() }
 
         playButton.setOnClickListener {
             val i = Intent(activity, GameActivity::class.java)

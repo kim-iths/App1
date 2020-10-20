@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:padding="4dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,10 +16,9 @@
 
     <RelativeLayout
         android:elevation="4dp"
-        android:foreground="?selectableItemBackground"
         android:id="@+id/buttonCurrentPlayer"
         android:layout_margin="4dp"
-        android:background="@drawable/button_background"
+        android:background="@drawable/mask"
         android:layout_above="@id/topRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -50,7 +48,6 @@
 
         <RelativeLayout
             android:id="@+id/buttonPlay"
-            android:foreground="?selectableItemBackground"
             style="@style/MainMenuButtonRemastered">
 
             <TextView
@@ -63,7 +60,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:foreground="?selectableItemBackground"
             android:id="@+id/buttonHighscores"
             style="@style/MainMenuButtonRemastered">
 
@@ -86,7 +82,6 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:foreground="?selectableItemBackground"
             android:id="@+id/buttonTutorial"
             style="@style/MainMenuButtonRemastered">
 
@@ -100,7 +95,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:foreground="?selectableItemBackground"
             android:id="@+id/buttonSettings"
             style="@style/MainMenuButtonRemastered">
 

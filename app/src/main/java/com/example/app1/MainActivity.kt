@@ -15,11 +15,40 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportActionBar?.hide()
-
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.container, FragmentMainMenu(), "fragment")
         transaction.commit()
     }
+
+    fun choosePlayer(){
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, FragmentChoosePlayer(),"fragment")
+        transaction.commit()
+
+    }
+
+    fun returnToMainMenu(){
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, FragmentMainMenu(),"fragment")
+        transaction.commit()
+    }
+
+    fun play(){
+
+    }
+
+    fun highscores(){
+
+    }
+
+    fun tutorial(){
+
+    }
+
+    fun settings(){
+
+    }
+
 }
 
 
@@ -29,10 +58,12 @@ class MainActivity : AppCompatActivity() {
 
 // Done
 //TODO("Game over screen")
+
+// In progress
 //TODO("Difficulty selection")
 //TODO("In harder difficulties, make the correct button change place after a certain amount of time")
 
-// In progress
+// Done
 //TODO("Make use of fragments for main menu and in game")
 
 // In progress
