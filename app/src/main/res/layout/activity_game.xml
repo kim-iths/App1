@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2c383b"
     android:orientation="vertical"
     android:padding="8dp">
+    <!--    android:background="#2c383b"-->
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,21 +16,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/holo_red_light"
-            android:drawableLeft="@drawable/arrow_left"
+            android:drawableStart="@drawable/arrow_left"
             android:drawableTint="@android:color/white"
             android:text="@string/back"
             android:textColor="@android:color/white" />
 
         <Button
+            android:layout_toEndOf="@id/buttonBack"
             android:backgroundTint="@color/colorScheme4Light"
             android:id="@+id/buttonRestart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/restart"
+            android:drawableStart="@drawable/restart"
             android:text="@string/restart" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewCurrentPlayer"
+            android:textStyle="bold"
+            android:drawablePadding="4dp"
+            android:layout_alignBaseline="@id/buttonBack"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:textAllCaps="true"
+            android:text="Player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:drawableEndCompat="@drawable/icon_player" />
+    </RelativeLayout>
 
     <FrameLayout
+        android:animateLayoutChanges="true"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

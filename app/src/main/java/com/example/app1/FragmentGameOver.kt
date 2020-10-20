@@ -25,8 +25,8 @@ class FragmentGameOver : Fragment(){
         val timeTextView = view.findViewById<TextView>(R.id.textViewTime)
 
         val context = (activity as GameActivity)
-        scoreTextView.text = "Score: " + context.score.toString()
-        timeTextView.text = "Time: " + context.time.toString()
+        scoreTextView.text = resources.getText(R.string.current_player).toString() + " " + context.score.toString()
+        timeTextView.text = resources.getText(R.string.current_player).toString() + " " + context.time.toString()
 
         retryButton.setOnClickListener { (activity as GameActivity).startGame() }
         exitButton.setOnClickListener { (activity as GameActivity).finish() }

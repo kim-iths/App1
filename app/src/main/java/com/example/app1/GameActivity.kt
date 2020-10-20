@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_game.*
 
@@ -19,33 +20,35 @@ class GameActivity : AppCompatActivity(){
 
         supportActionBar?.hide()
 
+        val currentPlayer = intent.getSerializableExtra("currentPlayer") as Player
+
+
         startGame()
 
         val backButton = findViewById<Button>(R.id.buttonBack)
         val restartButton = findViewById<Button>(R.id.buttonRestart)
+        val currentPlayerTextView = findViewById<TextView>(R.id.textViewCurrentPlayer)
 
         backButton.setOnClickListener { finish() }
         restartButton.setOnClickListener { startGame() }
-
+        currentPlayerTextView.text = currentPlayer.name
     }
 
     fun gameOver(){
         val transaction = supportFragmentManager.beginTransaction()
 
-        transaction.replace(R.id.container,FragmentGameOver(), "gameOverFragment")
+        transaction.replace(R.id.container,FragmentGameOver(), "fragment")
         transaction.commit()
     }
 
     fun startGame(){
         val transaction = supportFragmentManager.beginTransaction()
-
-        val fragment = supportFragmentManager.findFragmentByTag("gameOverFragment")
+        val fragment = supportFragmentManager.findFragmentByTag("fragment")
 
         if(fragment != null){
-            Log.e("GameActivity", "fragment exists")
-            transaction.replace(R.id.container, FragmentGame(), "gameFragment")
+            transaction.replace(R.id.container, FragmentGame(), "fragment")
         }else{
-            transaction.add(R.id.container, FragmentGame(), "gameFragment")
+            transaction.add(R.id.container, FragmentGame(), "fragment")
         }
 
         transaction.commit()

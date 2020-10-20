@@ -14,4 +14,7 @@
     <string name="retry">Retry</string>
     <string name="back">Back</string>
     <string name="restart">Restart</string>
+    <string name="score">Score:</string>
+    <string name="time">Time:</string>
+    <string name="current_player">Current player:</string>
 </resources>
