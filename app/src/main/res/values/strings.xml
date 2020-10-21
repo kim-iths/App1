@@ -15,10 +15,12 @@
     <string name="back">Back</string>
     <string name="restart">Restart</string>
     <string name="score">Score:</string>
+    <string name="level">Level:</string>
     <string name="time">Time:</string>
     <string name="current_player">Current player:</string>
     <string name="settings">Settings</string>
     <string name="easy">Easy</string>
     <string name="hard">Hard</string>
     <string name="medium">Medium</string>
+    <string name="final_score">Final score:</string>
 </resources>

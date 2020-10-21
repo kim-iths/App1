@@ -1,6 +1,7 @@
 package com.example.app1
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +10,11 @@ import com.example.app1.fragments.FragmentGameOver
 
 class GameActivity : AppCompatActivity(){
 
-    var score = 0
+    var level = 0
     var time = 0.0
+    var score = 0
+    var timeLimitSeconds = 0
+
     lateinit var currentDifficulty: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +42,10 @@ class GameActivity : AppCompatActivity(){
 
         transaction.replace(R.id.container, FragmentGameOver(), "fragment")
         transaction.commit()
+
+        //TODO("Make a better formula")
+        score = (timeLimitSeconds - time.toInt()) * Math.pow(level.toDouble(), 2.0).toInt()
+        Log.e("GameActivity", "Time: " +  time + ", Score: " + score)
     }
 
     fun startGame(){

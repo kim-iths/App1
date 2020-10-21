@@ -1,12 +1,13 @@
 package com.example.app1.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.app1.ButtonAdapter
 import com.example.app1.ColorButton
@@ -22,8 +23,12 @@ class FragmentGame : Fragment(){
     lateinit var startTextView: TextView
     lateinit var timerTextView: Chronometer
 
+    //difficulty specific
     var roundsUntilTileIncrease = 0
     var roundsPerTileIncrease  = 0
+    var timeLimitMilliseconds = 0
+    var amountLevels = 0
+
 
     var amountToAdd = 3
     var random = 0
@@ -35,6 +40,7 @@ class FragmentGame : Fragment(){
 
     lateinit var buttonList: MutableList<ColorButton>
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,41 +62,66 @@ class FragmentGame : Fragment(){
         grid.adapter = adapter
 
         val difficulty = context.currentDifficulty
-        roundsPerTileIncrease = when(difficulty){
-            "easy" -> 2
-            "medium" -> 1
-            "hard" -> 1
-            else -> 2
+        when(difficulty){
+            "easy" -> {
+                roundsPerTileIncrease = 2
+                timeLimitMilliseconds = 30000
+            }
+            "medium" -> {
+                roundsPerTileIncrease = 1
+                timeLimitMilliseconds = 20000
+            }
+            "hard" -> {
+                roundsPerTileIncrease = 1
+                timeLimitMilliseconds = 20000
+            }
+            else -> return null
         }
 
         difficultyTextView.text = difficulty
 
-        reset()
 
-        // Checks whether or not the correct square was pressed
-        grid.setOnItemClickListener { adapterView, view, i, l ->
-            if(startTextView.visibility == TextView.VISIBLE) startTextView.visibility = TextView.GONE
-            if(level == 0){
-                timerTextView.base = SystemClock.elapsedRealtime()
-                timerTextView.start()
-                timerActive = true
-
-                ++level
-                addTiles()
-            }else if(i == random){ // Correct square
-                Log.e("FragmentGame", "rounds per increase: " + roundsPerTileIncrease + ", left: " + roundsUntilTileIncrease)
-                scoreTextView.text = level.toString()
-                ++level
-
-                if(roundsUntilTileIncrease == 0) addTiles() else --roundsUntilTileIncrease
-                nextRound(level)
-            }else{ // Wrong square
-                context.score = level
-                context.time = ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble()/1000)
-
+        timerTextView.isCountDown = true
+        timerTextView.setOnChronometerTickListener{
+            if(SystemClock.elapsedRealtime() - it.base >= 1){
+                timerTextView.stop()
                 context.gameOver()
             }
         }
+
+        // Checks whether or not the correct square was pressed
+        grid.setOnItemClickListener { adapterView, view, i, l ->
+
+            when {
+                level == 0 -> {
+                    startTextView.visibility = TextView.GONE
+//                    scoreTextView.text = level.toString()
+
+                    timerTextView.base = SystemClock.elapsedRealtime() + timeLimitMilliseconds
+                    timerTextView.start()
+                    timerActive = true
+
+                    addTiles()
+                    ++level
+                }
+                i == random -> { // Correct square
+                    scoreTextView.text = level.toString()
+
+                    if(roundsUntilTileIncrease == 0) addTiles() else --roundsUntilTileIncrease
+                    nextRound(level)
+                    ++level
+                }
+                else -> { // Wrong square
+                    context.level = level
+                    context.time = (timeLimitMilliseconds + ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble()))/1000
+                    context.timeLimitSeconds = timeLimitMilliseconds/1000
+
+                    context.gameOver()
+                }
+            }
+        }
+        reset()
+
         return view
     }
 
@@ -131,11 +162,11 @@ class FragmentGame : Fragment(){
             }
         }
 
-        if(timerActive){
+        //if(timerActive){
             timerActive = false
-            timerTextView.base = SystemClock.elapsedRealtime()
+            timerTextView.base = SystemClock.elapsedRealtime() + timeLimitMilliseconds
             timerTextView.stop()
-        }
+        //}
 
         startTextView.visibility = TextView.VISIBLE
         grid.numColumns = 1

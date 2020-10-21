@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val testPlayer = Player("kimpi")
+        val testPlayer = Player("Guest")
         playerList.add(testPlayer)
         currentPlayer = playerList[0]
 
