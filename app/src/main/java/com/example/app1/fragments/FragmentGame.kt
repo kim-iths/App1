@@ -2,6 +2,7 @@ package com.example.app1.fragments
 
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,9 +22,12 @@ class FragmentGame : Fragment(){
     lateinit var startTextView: TextView
     lateinit var timerTextView: Chronometer
 
+    var roundsUntilTileIncrease = 0
+    var roundsPerTileIncrease  = 0
+
     var amountToAdd = 3
     var random = 0
-    var round = 1
+    var level = 0
     var colorDark = 0
     var colorMedium = 0
     var colorLight = 0
@@ -36,12 +40,14 @@ class FragmentGame : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_game, container, false)
 
+        val context = (activity as GameActivity)
+
         grid = view.findViewById(R.id.grid)
-        scoreTextView = view.findViewById(R.id.textViewScore)
+        val difficultyTextView = view.findViewById<TextView>(R.id.textViewDifficulty)
         timerTextView = view.findViewById(R.id.textViewTimer)
+        scoreTextView = view.findViewById(R.id.textViewScore)
         startTextView = view.findViewById(R.id.textViewStart)
 
         buttonList = mutableListOf()
@@ -49,44 +55,51 @@ class FragmentGame : Fragment(){
         adapter = ButtonAdapter(activity, buttonList)
         grid.adapter = adapter
 
+        val difficulty = context.currentDifficulty
+        roundsPerTileIncrease = when(difficulty){
+            "easy" -> 2
+            "medium" -> 1
+            "hard" -> 1
+            else -> 2
+        }
+
+        difficultyTextView.text = difficulty
+
         reset()
 
         // Checks whether or not the correct square was pressed
         grid.setOnItemClickListener { adapterView, view, i, l ->
             if(startTextView.visibility == TextView.VISIBLE) startTextView.visibility = TextView.GONE
-            if(round == 1){
+            if(level == 0){
                 timerTextView.base = SystemClock.elapsedRealtime()
                 timerTextView.start()
                 timerActive = true
-            }
 
-            if(i == random){ // Correct square
-                scoreTextView.text = round.toString()
-                ++grid.numColumns
-                round += 1
-                nextRound(round)
+                ++level
+                addTiles()
+            }else if(i == random){ // Correct square
+                Log.e("FragmentGame", "rounds per increase: " + roundsPerTileIncrease + ", left: " + roundsUntilTileIncrease)
+                scoreTextView.text = level.toString()
+                ++level
+
+                if(roundsUntilTileIncrease == 0) addTiles() else --roundsUntilTileIncrease
+                nextRound(level)
             }else{ // Wrong square
-                var context = (activity as GameActivity)
-
-                context.score = round
+                context.score = level
                 context.time = ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble()/1000)
 
                 context.gameOver()
             }
         }
-
         return view
     }
 
     fun nextRound(count: Int) {
         buttonList[random].color = colorMedium
 
-        for (i in 1..amountToAdd) buttonList.add(ColorButton(colorMedium))
-
-        random = Random.nextInt(0, (count) * (count))
+        random = Random.nextInt(0, grid.numColumns * grid.numColumns)
         buttonList[random].color = colorDark
         adapter.notifyDataSetChanged()
-        amountToAdd += 2
     }
 
     fun reset(){
@@ -126,7 +139,7 @@ class FragmentGame : Fragment(){
 
         startTextView.visibility = TextView.VISIBLE
         grid.numColumns = 1
-        round = 1
+        level = 0
         amountToAdd = 3
         random = 0
         scoreTextView.text = "0"
@@ -136,4 +149,11 @@ class FragmentGame : Fragment(){
         adapter.notifyDataSetChanged()
     }
 
+    fun addTiles(){
+        ++grid.numColumns
+        for (i in 1..amountToAdd) buttonList.add(ColorButton(colorMedium))
+        adapter.notifyDataSetChanged()
+        amountToAdd += 2
+        roundsUntilTileIncrease = roundsPerTileIncrease
+    }
 }

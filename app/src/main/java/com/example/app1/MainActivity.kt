@@ -61,9 +61,11 @@ class MainActivity : AppCompatActivity() {
 
 }
 
+// In progress
 //TODO("Create different gameplay for each difficulty")
 //TODO("Add sounds")
 //TODO("Add animations/graphics")
+//TODO("In harder difficulties, make the correct button change place after a certain amount of time")
 
 // Done
 //TODO("User selection? Guest player?")
@@ -71,9 +73,8 @@ class MainActivity : AppCompatActivity() {
 // Done
 //TODO("Game over screen")
 
-// In progress
+// Done
 //TODO("Difficulty selection")
-//TODO("In harder difficulties, make the correct button change place after a certain amount of time")
 
 // Done
 //TODO("Make use of fragments for main menu and in game")

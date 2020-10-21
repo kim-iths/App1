@@ -11,6 +11,7 @@ class GameActivity : AppCompatActivity(){
 
     var score = 0
     var time = 0.0
+    lateinit var currentDifficulty: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +20,7 @@ class GameActivity : AppCompatActivity(){
         supportActionBar?.hide()
 
         val currentPlayer = intent.getSerializableExtra("currentPlayer") as Player
+        currentDifficulty = intent.getStringExtra("difficulty").toString()
 
         startGame()
 
