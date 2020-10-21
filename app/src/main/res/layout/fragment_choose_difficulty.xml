@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/outsideView0"
+        android:layout_weight="0.5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/titleSubmenu"
+            android:focusable="false"
+            android:clickable="false"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:text="Choose difficulty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:elevation="4dp"
+        android:background="@drawable/button_background"
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <TextView
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:id="@+id/buttonBack"
+            android:padding="8dp"
+            android:drawablePadding="4dp"
+            android:text="@string/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:drawableStartCompat="@drawable/back" />
+
+        <LinearLayout
+            android:id="@+id/topRow"
+            android:layout_below="@id/buttonBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_margin="12dp"
+                android:id="@+id/buttonEasy"
+                style="@style/MainMenuButtonRemastered">
+
+                <TextView
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/colorScheme3Light"
+                    android:id="@+id/textViewDifficultyEasy"
+                    style="@style/MainMenuButtonText"
+                    android:text="@string/easy"/>
+                <TextView
+                    android:layout_centerInParent="true"
+                    android:paddingHorizontal="12dp"
+                    android:text="30 seconds, 9 levels, more tiles every third level"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_margin="12dp"
+                android:id="@+id/buttonMedium"
+                style="@style/MainMenuButtonRemastered">
+
+                <TextView
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/colorScheme4Light"
+                    android:id="@+id/textViewDifficultyMedium"
+                    android:text="@string/medium"
+                    style="@style/MainMenuButtonText"/>
+                <TextView
+                    android:layout_centerInParent="true"
+                    android:paddingHorizontal="12dp"
+                    android:text="20 seconds 12 levels, more tiles every second level"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/topRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_margin="12dp"
+                android:id="@+id/buttonHard"
+                style="@style/MainMenuButtonRemastered">
+
+                <TextView
+                    android:layout_marginTop="16dp"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/textViewDifficultyHard"
+                    style="@style/MainMenuButtonText"
+                    android:text="@string/hard"
+                    android:textColor="@color/colorScheme1Light" />
+
+                <TextView
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_centerInParent="true"
+                    android:text="20 seconds, 12 levels, same as medium but the correct tile moves each second"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/outsideView1"
+        android:layout_weight="0.5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.example.app1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.app1.fragments.FragmentChooseDifficulty
 import com.example.app1.fragments.FragmentChoosePlayer
 import com.example.app1.fragments.FragmentHighscores
 import com.example.app1.fragments.FragmentMainMenu
@@ -39,7 +40,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun play(){
-
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, FragmentChooseDifficulty(),"fragment")
+        transaction.commit()
     }
 
     fun highscores(){
@@ -58,9 +61,11 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-
+//TODO("Create different gameplay for each difficulty")
 //TODO("Add sounds")
 //TODO("Add animations/graphics")
+
+// Done
 //TODO("User selection? Guest player?")
 
 // Done
@@ -73,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 // Done
 //TODO("Make use of fragments for main menu and in game")
 
-// In progress
+// Done
 //TODO("Main menu")
 
 // Done

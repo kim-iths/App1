@@ -54,6 +54,7 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:layout_margin="4dp"
                 android:textColor="@color/colorScheme3Light"
                 android:text="@string/easy"
                 style="?buttonBarButtonStyle"
@@ -63,6 +64,7 @@
                 android:layout_height="wrap_content"/>
 
             <Button
+                android:layout_margin="4dp"
                 android:textColor="@color/colorScheme4Light"
                 android:text="@string/medium"
                 style="?buttonBarButtonStyle"
@@ -72,6 +74,7 @@
                 android:layout_height="wrap_content"/>
 
             <Button
+                android:layout_margin="4dp"
                 android:textColor="@color/colorScheme1Light"
                 android:text="@string/hard"
                 style="?buttonBarButtonStyle"
@@ -83,10 +86,20 @@
         </LinearLayout>
 
         <ListView
+            android:animateLayoutChanges="true"
             android:layout_below="@id/buttonRow"
             android:id="@+id/listViewHighscores"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <TextView
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No scores yet. Go play the game!"
+            android:id="@+id/emptyView"/>
 
     </RelativeLayout>
 

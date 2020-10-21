@@ -38,9 +38,11 @@ class FragmentMainMenu : Fragment(){
         currentPlayerButton.setOnClickListener { context.choosePlayer() }
 
         playButton.setOnClickListener {
-            val i = Intent(activity, GameActivity::class.java)
-            i.putExtra("currentPlayer", context.currentPlayer)
-            startActivity(i)
+            context.play()
+
+            //val i = Intent(activity, GameActivity::class.java)
+            //i.putExtra("currentPlayer", context.currentPlayer)
+            //startActivity(i)
         }
 
         highscoresButton.setOnClickListener { context.highscores() }
