@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.loader.app.LoaderManager
@@ -18,6 +15,7 @@ import com.example.app1.MainActivity
 import com.example.app1.R
 import com.example.app1.data.HighscoreContract
 import com.example.app1.data.HighscoreCursorAdapter
+import java.lang.IllegalArgumentException
 
 class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -91,8 +89,9 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
                 buttonShowEasy.background = ResourcesCompat.getDrawable(resources, R.drawable.button_background_highscores, null)
                 buttonShowEasy.background.setTint(ResourcesCompat.getColor(resources,R.color.colorScheme3Light, null))
-//                buttonShowEasy.backgroundTintList = ResourcesCompat.getColorStateList(resources, R.color.colorScheme3Light, null)
                 buttonShowEasy.isEnabled = false
+
+                loaderManager.restartLoader(0, null, this)
             }
             "medium" -> {
                 currentDifficulty = "medium"
@@ -100,6 +99,8 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                 buttonShowMedium.background = ResourcesCompat.getDrawable(resources, R.drawable.button_background_highscores, null)
                 buttonShowMedium.background.setTint(ResourcesCompat.getColor(resources,R.color.colorScheme4Light, null))
                 buttonShowMedium.isEnabled = false
+
+                loaderManager.restartLoader(0, null, this)
             }
             "hard" -> {
                 currentDifficulty = "hard"
@@ -107,11 +108,24 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                 buttonShowHard.background = ResourcesCompat.getDrawable(resources, R.drawable.button_background_highscores, null)
                 buttonShowHard.background.setTint(ResourcesCompat.getColor(resources,R.color.colorScheme1Light, null))
                 buttonShowHard.isEnabled = false
+
+                loaderManager.restartLoader(0, null, this)
+
             }
         }
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+        val selection = "${HighscoreContract.HighscoresEntry.COLUMN_DIFFICULTY} = ?"
+
+        val selectionArgs: Array<String>
+        when(currentDifficulty){
+            "easy" -> selectionArgs = arrayOf("easy")
+            "medium" -> selectionArgs = arrayOf("medium")
+            "hard" -> selectionArgs = arrayOf("hard")
+            else -> throw IllegalArgumentException("Not a valid difficulty")
+        }
+
         val projection = arrayOf(
             HighscoreContract.HighscoresEntry._ID,
             HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME,
@@ -119,7 +133,8 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
             HighscoreContract.HighscoresEntry.COLUMN_TIME,
             HighscoreContract.HighscoresEntry.COLUMN_DIFFICULTY)
 
-        return CursorLoader(context, HighscoreContract.HighscoresEntry.CONTENT_URI, projection, null, null, null)
+        return CursorLoader(context, HighscoreContract.HighscoresEntry.CONTENT_URI, projection, selection, selectionArgs,
+        HighscoreContract.HighscoresEntry.COLUMN_SCORE + " DESC")
 
 
     }
