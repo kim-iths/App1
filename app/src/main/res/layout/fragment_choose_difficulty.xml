@@ -53,6 +53,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
+                android:backgroundTint="@color/colorScheme3Light"
                 android:layout_margin="12dp"
                 android:id="@+id/buttonEasy"
                 style="@style/MainMenuButtonRemastered">
@@ -60,11 +61,12 @@
                 <TextView
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="16dp"
-                    android:textColor="@color/colorScheme3Light"
+                    android:textColor="@android:color/white"
                     android:id="@+id/textViewDifficultyEasy"
                     style="@style/MainMenuButtonText"
                     android:text="@string/easy"/>
                 <TextView
+                    android:textColor="@android:color/white"
                     android:layout_centerInParent="true"
                     android:paddingHorizontal="12dp"
                     android:text="30 seconds, 24 levels, more tiles every third level"
@@ -73,6 +75,7 @@
                     android:layout_height="wrap_content"/>
             </RelativeLayout>
             <RelativeLayout
+                android:backgroundTint="@color/colorScheme4Light"
                 android:layout_margin="12dp"
                 android:id="@+id/buttonMedium"
                 style="@style/MainMenuButtonRemastered">
@@ -80,11 +83,12 @@
                 <TextView
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="16dp"
-                    android:textColor="@color/colorScheme4Light"
+                    android:textColor="@android:color/white"
                     android:id="@+id/textViewDifficultyMedium"
                     android:text="@string/medium"
                     style="@style/MainMenuButtonText"/>
                 <TextView
+                    android:textColor="@android:color/white"
                     android:layout_centerInParent="true"
                     android:paddingHorizontal="12dp"
                     android:text="20 seconds 20 levels, more tiles every other level"
@@ -98,20 +102,23 @@
             android:layout_below="@id/topRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <RelativeLayout
+                android:backgroundTint="@color/colorScheme1Light"
                 android:layout_margin="12dp"
                 android:id="@+id/buttonHard"
                 style="@style/MainMenuButtonRemastered">
 
                 <TextView
+                    android:textColor="@android:color/white"
                     android:layout_marginTop="16dp"
                     android:layout_alignParentTop="true"
                     android:id="@+id/textViewDifficultyHard"
                     style="@style/MainMenuButtonText"
-                    android:text="@string/hard"
-                    android:textColor="@color/colorScheme1Light" />
+                    android:text="@string/hard" />
 
                 <TextView
+                    android:textColor="@android:color/white"
                     android:layout_marginHorizontal="12dp"
                     android:layout_centerInParent="true"
                     android:text="20 seconds, 20 levels, same as medium but the correct tile moves each second"

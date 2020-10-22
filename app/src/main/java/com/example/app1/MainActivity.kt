@@ -7,6 +7,8 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
+import androidx.core.content.ContextCompat
 import com.example.app1.data.HighscoreContract
 import com.example.app1.data.HighscoreCursorAdapter
 import com.example.app1.fragments.FragmentChooseDifficulty
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        this.window.statusBarColor = ContextCompat.getColor(this, R.color.colorScheme2Dark)
         shared = getSharedPreferences("firstLaunch", MODE_PRIVATE)
         if(shared.getBoolean("firstLaunch", true)) firstLaunch() else Log.e("Main", "inte first???")
 //        val testPlayer = Player("Guest")

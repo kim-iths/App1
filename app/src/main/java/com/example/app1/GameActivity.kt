@@ -11,6 +11,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.app1.data.HighscoreContract
 import com.example.app1.data.HighscoreCursorAdapter
 import com.example.app1.fragments.FragmentGame
@@ -35,6 +36,7 @@ class GameActivity : AppCompatActivity(){
         setContentView(R.layout.activity_game)
 
         supportActionBar?.hide()
+        this.window.statusBarColor = ContextCompat.getColor(this, R.color.colorNotificationBar)
 
         currentPlayer = intent.getSerializableExtra("currentPlayer") as Player
         currentDifficulty = intent.getStringExtra("difficulty").toString()
