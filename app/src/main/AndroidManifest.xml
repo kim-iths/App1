@@ -10,13 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainMenuActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            </intent-filter>
-        </activity>
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,6 +20,10 @@
         <activity android:name=".GameActivity">
 
         </activity>
+        <provider
+            android:authorities="com.example.app1"
+            android:multiprocess="true"
+            android:name="com.example.app1.data.HighscoreProvider"/>
     </application>
 
 </manifest>

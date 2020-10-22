@@ -52,6 +52,7 @@ class FragmentChooseDifficulty : Fragment(){
         val i = Intent(activity, GameActivity::class.java)
         i.putExtra("currentPlayer", context.currentPlayer)
         i.putExtra("difficulty", difficulty)
+//        i.putExtra("highscores", context.highscores as ArrayList)
         startActivity(i)
     }
 }

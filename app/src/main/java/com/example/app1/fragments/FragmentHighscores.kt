@@ -1,5 +1,6 @@
 package com.example.app1.fragments
 
+import android.database.Cursor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,17 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.CursorLoader
+import androidx.loader.content.Loader
 import com.example.app1.MainActivity
 import com.example.app1.R
+import com.example.app1.data.HighscoreContract
+import com.example.app1.data.HighscoreCursorAdapter
 
-class FragmentHighscores : Fragment() {
+class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
+
+    lateinit var mHighscoreCursorAdapter: HighscoreCursorAdapter
 
     lateinit var context: MainActivity
 
@@ -30,16 +38,21 @@ class FragmentHighscores : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_highscores, container, false)
 
+
         context = (activity as MainActivity)
+        mHighscoreCursorAdapter = HighscoreCursorAdapter(context, null)
+        loaderManager.initLoader(0, null, this)
 
         val backButton = view.findViewById<TextView>(R.id.buttonBack)
-
         buttonShowEasy = view.findViewById(R.id.buttonShowScoresEasy)
         buttonShowMedium = view.findViewById(R.id.buttonShowScoresMedium)
         buttonShowHard = view.findViewById(R.id.buttonShowScoresHard)
 
         val listHighscores = view.findViewById<ListView>(R.id.listViewHighscores)
         listHighscores.emptyView = view.findViewById(R.id.emptyView)
+        listHighscores.adapter = mHighscoreCursorAdapter
+
+        //listHighscores.adapter = HighscoresAdapter(context, context.highscores)
 
         val outside0 = view.findViewById<LinearLayout>(R.id.outsideView0)
         val outside1 = view.findViewById<LinearLayout>(R.id.outsideView1)
@@ -49,12 +62,12 @@ class FragmentHighscores : Fragment() {
         buttonShowHard.setOnClickListener { showScores("hard") }
 
 
-
         backButton.setOnClickListener { returnToMainMenu() }
         outside0.setOnClickListener { returnToMainMenu() }
         outside1.setOnClickListener { returnToMainMenu() }
 
         showScores("easy")
+
 
         return view
     }
@@ -97,4 +110,27 @@ class FragmentHighscores : Fragment() {
             }
         }
     }
+
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+        val projection = arrayOf(
+            HighscoreContract.HighscoresEntry._ID,
+            HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME,
+            HighscoreContract.HighscoresEntry.COLUMN_SCORE,
+            HighscoreContract.HighscoresEntry.COLUMN_TIME,
+            HighscoreContract.HighscoresEntry.COLUMN_DIFFICULTY)
+
+        return CursorLoader(context, HighscoreContract.HighscoresEntry.CONTENT_URI, projection, null, null, null)
+
+
+    }
+
+    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
+        mHighscoreCursorAdapter.swapCursor(data)
+    }
+
+    override fun onLoaderReset(loader: Loader<Cursor>) {
+        mHighscoreCursorAdapter.swapCursor(null)
+    }
+
+
 }

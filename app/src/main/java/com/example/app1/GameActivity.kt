@@ -1,19 +1,28 @@
 package com.example.app1
 
+import android.content.ContentValues
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.app1.data.HighscoreContract
+import com.example.app1.data.HighscoreCursorAdapter
 import com.example.app1.fragments.FragmentGame
 import com.example.app1.fragments.FragmentGameOver
+import com.example.app1.fragments.FragmentWin
+
 
 class GameActivity : AppCompatActivity(){
 
+    lateinit var currentPlayer: Player
     var level = 0
     var time = 0.0
     var score = 0
     var timeLimitSeconds = 0
+
+    lateinit var highscores: MutableList<Highscore>
 
     lateinit var currentDifficulty: String
 
@@ -23,7 +32,7 @@ class GameActivity : AppCompatActivity(){
 
         supportActionBar?.hide()
 
-        val currentPlayer = intent.getSerializableExtra("currentPlayer") as Player
+        currentPlayer = intent.getSerializableExtra("currentPlayer") as Player
         currentDifficulty = intent.getStringExtra("difficulty").toString()
 
         startGame()
@@ -37,15 +46,26 @@ class GameActivity : AppCompatActivity(){
         currentPlayerTextView.text = currentPlayer.name
     }
 
+    fun win(){
+        val transaction = supportFragmentManager.beginTransaction()
+
+        transaction.replace(R.id.container, FragmentWin(), "fragment")
+        transaction.commit()
+
+        score = (timeLimitSeconds - time.toInt()) * Math.pow(level.toDouble(), 2.0).toInt()
+        Log.e("GameActivity", "Time: " +  time + ", Score: " + score)
+
+        addHighscore(Highscore(currentPlayer, score, time, currentDifficulty))
+    }
+
     fun gameOver(){
         val transaction = supportFragmentManager.beginTransaction()
 
         transaction.replace(R.id.container, FragmentGameOver(), "fragment")
         transaction.commit()
 
-        //TODO("Make a better formula")
-        score = (timeLimitSeconds - time.toInt()) * Math.pow(level.toDouble(), 2.0).toInt()
-        Log.e("GameActivity", "Time: " +  time + ", Score: " + score)
+        score = (timeLimitSeconds - time.toInt()) * Math.pow(level.toDouble(), 1.25).toInt()
+        addHighscore(Highscore(currentPlayer, score, time, currentDifficulty))
     }
 
     fun startGame(){
@@ -59,5 +79,15 @@ class GameActivity : AppCompatActivity(){
         }
 
         transaction.commit()
+    }
+
+    fun addHighscore(highscore: Highscore){
+        val values = ContentValues()
+        values.put(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME, highscore.player.name)
+        values.put(HighscoreContract.HighscoresEntry.COLUMN_SCORE, highscore.score)
+        values.put(HighscoreContract.HighscoresEntry.COLUMN_TIME, highscore.time)
+        values.put(HighscoreContract.HighscoresEntry.COLUMN_DIFFICULTY, highscore.difficulty)
+
+        contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI, values)
     }
 }

@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.app1.GameActivity
 import com.example.app1.R
 
-class FragmentGameOver : Fragment(){
+class FragmentWin : Fragment(){
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,9 +18,9 @@ class FragmentGameOver : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_game_over, container, false)
+        val view = inflater.inflate(R.layout.fragment_win, container, false)
 
-        val retryButton = view.findViewById<Button>(R.id.buttonRetry)
+        val playAgainButton = view.findViewById<Button>(R.id.buttonPlayAgain)
         val exitButton = view.findViewById<Button>(R.id.buttonExit)
 
         val levelTextView = view.findViewById<TextView>(R.id.textViewLevel)
@@ -32,7 +32,7 @@ class FragmentGameOver : Fragment(){
         timeTextView.text = resources.getText(R.string.time).toString() + " " + context.time.toString()
         scoreTextView.text = resources.getText(R.string.final_score).toString() + " " + context.score.toString()
 
-        retryButton.setOnClickListener { (activity as GameActivity).startGame() }
+        playAgainButton.setOnClickListener { (activity as GameActivity).startGame() }
         exitButton.setOnClickListener { (activity as GameActivity).finish() }
 
         return view

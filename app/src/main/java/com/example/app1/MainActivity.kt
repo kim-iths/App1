@@ -1,7 +1,13 @@
 package com.example.app1
 
+import android.content.ContentValues
+import android.content.Context
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import com.example.app1.data.HighscoreContract
+import com.example.app1.data.HighscoreCursorAdapter
 import com.example.app1.fragments.FragmentChooseDifficulty
 import com.example.app1.fragments.FragmentChoosePlayer
 import com.example.app1.fragments.FragmentHighscores
@@ -16,6 +22,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val shared = getSharedPreferences("app", Context.MODE_PRIVATE)
+
         val testPlayer = Player("Guest")
         playerList.add(testPlayer)
         currentPlayer = playerList[0]
@@ -24,13 +32,24 @@ class MainActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.container, FragmentMainMenu(), "fragment")
         transaction.commit()
+
+//        addMockHighscores()
+    }
+
+    fun addMockHighscores(){
+        val values = ContentValues()
+        values.put(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME, "kimpi")
+        values.put(HighscoreContract.HighscoresEntry.COLUMN_SCORE, 928)
+        values.put(HighscoreContract.HighscoresEntry.COLUMN_TIME, 12.12)
+        values.put(HighscoreContract.HighscoresEntry.COLUMN_DIFFICULTY, "easy")
+
+        val uri: Uri? = contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI, values)
     }
 
     fun choosePlayer(){
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, FragmentChoosePlayer(),"fragment")
         transaction.commit()
-
     }
 
     fun returnToMainMenu(){
@@ -58,14 +77,18 @@ class MainActivity : AppCompatActivity() {
     fun settings(){
 
     }
-
 }
 
-// In progress
-//TODO("Create different gameplay for each difficulty")
 //TODO("Add sounds")
 //TODO("Add animations/graphics")
 //TODO("In harder difficulties, make the correct button change place after a certain amount of time")
+
+// In progress
+//TODO("Create a database for highscores")
+//TODO("Create a database for players")
+
+// Done
+//TODO("Create different gameplay for each difficulty")
 
 // Done
 //TODO("User selection? Guest player?")

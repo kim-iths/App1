@@ -29,14 +29,12 @@ class FragmentGame : Fragment(){
     var timeLimitMilliseconds = 0
     var amountLevels = 0
 
-
     var amountToAdd = 3
     var random = 0
     var level = 0
     var colorDark = 0
     var colorMedium = 0
     var colorLight = 0
-    var timerActive = false
 
     lateinit var buttonList: MutableList<ColorButton>
 
@@ -64,14 +62,17 @@ class FragmentGame : Fragment(){
         val difficulty = context.currentDifficulty
         when(difficulty){
             "easy" -> {
+                amountLevels = 24
                 roundsPerTileIncrease = 2
                 timeLimitMilliseconds = 30000
             }
             "medium" -> {
+                amountLevels = 20
                 roundsPerTileIncrease = 1
                 timeLimitMilliseconds = 20000
             }
             "hard" -> {
+                amountLevels = 20
                 roundsPerTileIncrease = 1
                 timeLimitMilliseconds = 20000
             }
@@ -79,7 +80,6 @@ class FragmentGame : Fragment(){
         }
 
         difficultyTextView.text = difficulty
-
 
         timerTextView.isCountDown = true
         timerTextView.setOnChronometerTickListener{
@@ -95,23 +95,28 @@ class FragmentGame : Fragment(){
             when {
                 level == 0 -> {
                     startTextView.visibility = TextView.GONE
-//                    scoreTextView.text = level.toString()
 
                     timerTextView.base = SystemClock.elapsedRealtime() + timeLimitMilliseconds
                     timerTextView.start()
-                    timerActive = true
 
                     addTiles()
                     ++level
                 }
-                i == random -> { // Correct square
+                i == random -> { //Correct tile
+                    if(amountLevels == level + 1){ //When the last tile in this difficulty is pressed
+                        context.level = level + 1
+                        context.time = (timeLimitMilliseconds + ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble()))/1000
+                        context.timeLimitSeconds = timeLimitMilliseconds/1000
+
+                        context.win()
+                    }
                     scoreTextView.text = level.toString()
 
                     if(roundsUntilTileIncrease == 0) addTiles() else --roundsUntilTileIncrease
                     nextRound(level)
                     ++level
                 }
-                else -> { // Wrong square
+                else -> { //Wrong tile
                     context.level = level
                     context.time = (timeLimitMilliseconds + ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble()))/1000
                     context.timeLimitSeconds = timeLimitMilliseconds/1000
@@ -162,11 +167,9 @@ class FragmentGame : Fragment(){
             }
         }
 
-        //if(timerActive){
-            timerActive = false
-            timerTextView.base = SystemClock.elapsedRealtime() + timeLimitMilliseconds
-            timerTextView.stop()
-        //}
+//        timerActive = false
+        timerTextView.base = SystemClock.elapsedRealtime() + timeLimitMilliseconds
+        timerTextView.stop()
 
         startTextView.visibility = TextView.VISIBLE
         grid.numColumns = 1
