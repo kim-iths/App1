@@ -1,8 +1,12 @@
 package com.example.app1
 
 import android.content.ContentValues
+import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
@@ -22,7 +26,7 @@ class GameActivity : AppCompatActivity(){
     var score = 0
     var timeLimitSeconds = 0
 
-    lateinit var highscores: MutableList<Highscore>
+    lateinit var vibrator: Vibrator
 
     lateinit var currentDifficulty: String
 
@@ -34,6 +38,8 @@ class GameActivity : AppCompatActivity(){
 
         currentPlayer = intent.getSerializableExtra("currentPlayer") as Player
         currentDifficulty = intent.getStringExtra("difficulty").toString()
+
+        vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         startGame()
 
@@ -90,4 +96,12 @@ class GameActivity : AppCompatActivity(){
 
         contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI, values)
     }
+
+    fun vibrate(amountMs: Long){
+        if (Build.VERSION.SDK_INT >= 26) {
+            vibrator.vibrate(VibrationEffect.createOneShot(amountMs, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator.vibrate(amountMs)
+    }
+}
 }

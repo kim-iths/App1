@@ -110,10 +110,11 @@ class FragmentGame : Fragment(){
 
                         context.win()
                     }
+                    context.vibrate(50)
                     scoreTextView.text = level.toString()
 
                     if(roundsUntilTileIncrease == 0) addTiles() else --roundsUntilTileIncrease
-                    nextRound(level)
+                    nextRound()
                     ++level
                 }
                 else -> { //Wrong tile
@@ -130,7 +131,7 @@ class FragmentGame : Fragment(){
         return view
     }
 
-    fun nextRound(count: Int) {
+    fun nextRound() {
         buttonList[random].color = colorMedium
 
         random = Random.nextInt(0, grid.numColumns * grid.numColumns)

@@ -18,11 +18,17 @@ class HighscoreProvider : ContentProvider() {
     val HIGHSCORES = 100
     val HIGHSCORE_ID = 101
 
+    val PLAYERS = 10
+    val PLAYER_ID = 11
+
     var sUriMatcher = UriMatcher(UriMatcher.NO_MATCH)
 
     init {
         sUriMatcher.addURI(HighscoreContract.CONTENT_AUTHORITY, HighscoreContract.PATH_HIGHSCORES, HIGHSCORES)
         sUriMatcher.addURI(HighscoreContract.CONTENT_AUTHORITY, HighscoreContract.PATH_HIGHSCORES + "/#", HIGHSCORE_ID)
+
+        sUriMatcher.addURI(HighscoreContract.CONTENT_AUTHORITY, HighscoreContract.PATH_PLAYERS, PLAYERS)
+        sUriMatcher.addURI(HighscoreContract.CONTENT_AUTHORITY, HighscoreContract.PATH_PLAYERS + "/#", PLAYER_ID)
     }
 
     override fun onCreate(): Boolean {
@@ -32,14 +38,11 @@ class HighscoreProvider : ContentProvider() {
     }
 
     override fun query(uri: Uri, projection: Array<out String>?, selection: String?, selectionArgs: Array<out String>?, sortOrder: String?): Cursor? {
-
-
         val database = mDbHelper.readableDatabase
-
-        var cursor: Cursor
+        val cursor: Cursor
 
         val match = sUriMatcher.match(uri)
-
+        Log.e("match: ", match.toString())
         when(match){
             HIGHSCORES -> cursor = database.query(HighscoreContract.HighscoresEntry.TABLE_NAME,
                 projection, selection, selectionArgs, null, null,sortOrder)
@@ -51,8 +54,21 @@ class HighscoreProvider : ContentProvider() {
                 cursor = database.query(HighscoreContract.HighscoresEntry.TABLE_NAME,
                     projection, newSelection, newSelectionArgs, null, null,sortOrder)
             }
+            PLAYERS -> {
+                cursor = database.query(HighscoreContract.HighscoresEntry.TABLE_NAME_PLAYERS,
+                    projection, selection, selectionArgs, null, null,sortOrder)
+            }
+            PLAYER_ID -> {
+                val newSelection = HighscoreContract.HighscoresEntry._ID + "=?"
+                val newSelectionArgs = arrayOf(ContentUris.parseId(uri).toString())
 
-            else -> throw IllegalArgumentException("Cannot query unknown URI " + uri)
+                cursor = database.query(HighscoreContract.HighscoresEntry.TABLE_NAME_PLAYERS,
+                    projection, newSelection, newSelectionArgs, null, null,sortOrder)
+            }
+            else ->{
+                Log.e("else", match.toString())
+                throw IllegalArgumentException("Cannot query unknown URI " + uri)
+            }
         }
 
         return cursor
@@ -65,6 +81,8 @@ class HighscoreProvider : ContentProvider() {
         when(match){
             HIGHSCORES -> return HighscoreContract.HighscoresEntry.CONTENT_LIST_TYPE
             HIGHSCORE_ID -> return HighscoreContract.HighscoresEntry.CONTENT_ITEM_TYPE
+            PLAYERS -> return HighscoreContract.HighscoresEntry.CONTENT_LIST_TYPE_PLAYER
+            PLAYER_ID -> return HighscoreContract.HighscoresEntry.CONTENT_ITEM_TYPE_PLAYER
             else -> throw IllegalStateException("Unknown URI " + p0 + " with match " + match)
         }
     }
@@ -74,9 +92,26 @@ class HighscoreProvider : ContentProvider() {
 
         when(match){
             HIGHSCORES -> return insertHighscore(p0, p1)
+            PLAYERS -> return insertPlayer(p0,p1)
             else -> throw IllegalArgumentException("Insertion is not supported for " + p0)
         }
 
+    }
+
+    fun insertPlayer(uri: Uri, contentValues: ContentValues?): Uri {
+        val database = mDbHelper.writableDatabase
+
+        val name = contentValues?.getAsString(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME)
+            ?: throw IllegalArgumentException("Player requires a name")
+
+        val id = database.insert(HighscoreContract.HighscoresEntry.TABLE_NAME_PLAYERS, null, contentValues)
+
+        if(id == -1L){
+            Log.e("HSProvider", "Failed to insert row for " + uri)
+        }
+        context?.contentResolver?.notifyChange(uri, null)
+
+        return ContentUris.withAppendedId(uri, id)
     }
 
     fun insertHighscore(uri: Uri, contentValues: ContentValues?): Uri {
@@ -86,13 +121,13 @@ class HighscoreProvider : ContentProvider() {
             ?: throw IllegalArgumentException("Highscore requires a name")
 
         val score = contentValues.getAsString(HighscoreContract.HighscoresEntry.COLUMN_SCORE)
-            ?: throw IllegalArgumentException("Highscore requires a name")
+            ?: throw IllegalArgumentException("Highscore requires a score")
 
         val time = contentValues.getAsString(HighscoreContract.HighscoresEntry.COLUMN_TIME)
-            ?: throw IllegalArgumentException("Highscore requires a name")
+            ?: throw IllegalArgumentException("Highscore requires a time")
 
         val difficulty = contentValues.getAsString(HighscoreContract.HighscoresEntry.COLUMN_DIFFICULTY)
-            ?: throw IllegalArgumentException("Highscore requires a name")
+            ?: throw IllegalArgumentException("Highscore requires a difficulty")
 
 
         val id = database.insert(HighscoreContract.HighscoresEntry.TABLE_NAME, null, contentValues)
@@ -119,6 +154,13 @@ class HighscoreProvider : ContentProvider() {
                 val newSelectionArgs = arrayOf(ContentUris.parseId(p0).toString())
 
                 rowsDeleted = database.delete(HighscoreContract.HighscoresEntry.TABLE_NAME, newSelection, newSelectionArgs)
+            }
+            PLAYERS -> rowsDeleted = database.delete(HighscoreContract.HighscoresEntry.TABLE_NAME_PLAYERS, p1, p2)
+            PLAYER_ID ->{
+                val newSelection = "_id=?"
+                val newSelectionArgs = arrayOf(ContentUris.parseId(p0).toString())
+
+                rowsDeleted = database.delete(HighscoreContract.HighscoresEntry.TABLE_NAME_PLAYERS, newSelection, newSelectionArgs)
             }
         }
         if(rowsDeleted != 0){

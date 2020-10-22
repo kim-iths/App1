@@ -17,7 +17,6 @@ class FragmentGameOver : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_game_over, container, false)
 
         val retryButton = view.findViewById<Button>(R.id.buttonRetry)
@@ -34,6 +33,8 @@ class FragmentGameOver : Fragment(){
 
         retryButton.setOnClickListener { (activity as GameActivity).startGame() }
         exitButton.setOnClickListener { (activity as GameActivity).finish() }
+
+        context.vibrate(400)
 
         return view
     }
