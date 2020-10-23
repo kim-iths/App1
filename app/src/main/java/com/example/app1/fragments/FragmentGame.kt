@@ -67,7 +67,7 @@ class FragmentGame : Fragment() {
         val difficulty = context.currentDifficulty
         when (difficulty) {
             "easy" -> {
-                amountLevels = 24
+                amountLevels = 16
                 roundsPerTileIncrease = 2
                 timeLimitMilliseconds = 30000
                 colorDifficulty = R.color.colorScheme3Light

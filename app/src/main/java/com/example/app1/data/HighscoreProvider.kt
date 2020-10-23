@@ -42,7 +42,6 @@ class HighscoreProvider : ContentProvider() {
         val cursor: Cursor
 
         val match = sUriMatcher.match(uri)
-        Log.e("match: ", match.toString())
         when(match){
             HIGHSCORES -> cursor = database.query(HighscoreContract.HighscoresEntry.TABLE_NAME,
                 projection, selection, selectionArgs, null, null,sortOrder)
@@ -66,7 +65,6 @@ class HighscoreProvider : ContentProvider() {
                     projection, newSelection, newSelectionArgs, null, null,sortOrder)
             }
             else ->{
-                Log.e("else", match.toString())
                 throw IllegalArgumentException("Cannot query unknown URI " + uri)
             }
         }
@@ -77,7 +75,6 @@ class HighscoreProvider : ContentProvider() {
     override fun getType(p0: Uri): String? {
         val match = sUriMatcher.match(p0)
 
-        Log.e("HSProvider", "" + match)
         when(match){
             HIGHSCORES -> return HighscoreContract.HighscoresEntry.CONTENT_LIST_TYPE
             HIGHSCORE_ID -> return HighscoreContract.HighscoresEntry.CONTENT_ITEM_TYPE

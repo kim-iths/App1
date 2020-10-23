@@ -61,7 +61,6 @@ class GameActivity : AppCompatActivity() {
         transaction.commit()
 
         score = ((timeLimitSeconds - time) * Math.pow(level.toDouble(), 2.0)).toInt()
-        Log.e("GameActivity", "Time: " + time + ", Score: " + score)
 
         addHighscore(Highscore(currentPlayer, score, time, currentDifficulty))
     }
