@@ -15,7 +15,6 @@ import com.example.app1.fragments.*
 
 class MainActivity : AppCompatActivity() {
 
-//    val playerList = mutableListOf<Player>()
     lateinit var currentPlayer: Player
     lateinit var shared: SharedPreferences
 
@@ -25,35 +24,13 @@ class MainActivity : AppCompatActivity() {
 
         this.window.statusBarColor = ContextCompat.getColor(this, R.color.colorScheme2Dark)
         shared = getSharedPreferences("firstLaunch", MODE_PRIVATE)
-        if(shared.getBoolean("firstLaunch", true)) firstLaunch() else Log.e("Main", "inte first???")
-//        val testPlayer = Player("Guest")
-//        playerList.add(testPlayer)
+        if(shared.getBoolean("firstLaunch", true)) firstLaunch()
         currentPlayer = Player("Guest")
 
         supportActionBar?.hide()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.container, FragmentMainMenu(), "fragment")
         transaction.commit()
-
-//        addMockHighscore()
-//        addMockPlayer()
-    }
-
-    private fun addMockPlayer() {
-        val values = ContentValues()
-        values.put(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME, "sten")
-
-        val uri: Uri? = contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI_PLAYERS, values)
-    }
-
-    fun addMockHighscore(){
-        val values = ContentValues()
-        values.put(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME, "kimpi")
-        values.put(HighscoreContract.HighscoresEntry.COLUMN_SCORE, 928)
-        values.put(HighscoreContract.HighscoresEntry.COLUMN_TIME, 12.12)
-        values.put(HighscoreContract.HighscoresEntry.COLUMN_DIFFICULTY, "easy")
-
-        val uri: Uri? = contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI, values)
     }
 
     fun choosePlayer(){
@@ -86,17 +63,13 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-    fun settings(){
-
-    }
+    fun settings(){}
 
     fun firstLaunch(){
         val values = ContentValues()
         values.put(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME, "Guest")
 
-        val uri: Uri? = contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI_PLAYERS, values)
-
-        Log.e("Main", "first launch!!")
+        contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI_PLAYERS, values)
 
         val editor = shared.edit()
         editor.putBoolean("firstLaunch", false)
@@ -106,6 +79,8 @@ class MainActivity : AppCompatActivity() {
 
 //TODO("Add sounds")
 //TODO("Add animations/graphics")
+
+// Tried
 //TODO("In harder difficulties, make the correct button change place after a certain amount of time")
 
 // Done

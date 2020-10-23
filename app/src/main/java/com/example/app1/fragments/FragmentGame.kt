@@ -29,13 +29,13 @@ class FragmentGame : Fragment() {
     var timeLimitMilliseconds = 0
     var amountLevels = 0
 
-
+    // Game logic
     var amountToAdd = 3
     var random = 0
     var lastRandom = 1
     var level = 0
 
-
+    // Colors
     var colorDark = 0
     var colorMedium = 0
     var colorLight = 0
@@ -152,7 +152,6 @@ class FragmentGame : Fragment() {
         } else {
             do {
                 random = Random.nextInt(0, grid.numColumns * grid.numColumns)
-                Log.e("FragmentGame", "random: " + random + ", gridColumns: " + grid.numColumns)
             } while (random == lastRandom)
         }
 
