@@ -1,65 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="4dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginTop="16dp"
+    android:orientation="vertical"
     tools:context=".fragments.FragmentGame">
 
-    <TextView
-        android:textAllCaps="true"
-        style="@style/GameInfoTextView"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/difficulty_medium"
-        android:id="@+id/textViewDifficulty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Chronometer
-        style="@style/GameInfoTextView"
-        android:id="@+id/textViewTimer"
-        android:text="0.0"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        style="@style/GameInfoTextView"
-        android:text="0"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/textViewScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
     <RelativeLayout
-        android:layout_below="@id/textViewDifficulty"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        android:layout_weight="3">
 
         <GridView
-            android:stretchMode="columnWidth"
             android:id="@+id/grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:horizontalSpacing="1dp"
             android:numColumns="1"
+            android:stretchMode="columnWidth"
             android:verticalSpacing="1dp" />
 
         <TextView
-            android:textStyle="bold"
+            android:focusable="false"
+            android:clickable="false"
+            android:gravity="center"
+            android:layout_alignStart="@id/grid"
+            android:layout_alignEnd="@id/grid"
+            android:layout_alignBottom="@id/grid"
+            android:layout_alignTop="@id/grid"
             android:id="@+id/textViewStart"
-            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:text="@string/press_to_start"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
     </RelativeLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:background="@drawable/mask"
+        android:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Difficulty" />
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:id="@+id/textViewDifficulty"
+                style="@style/GameInfoTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/difficulty_medium"
+                android:textAllCaps="true"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Time remaining" />
+
+            <Chronometer
+                android:textColor="@color/colorScheme2Dark"
+                android:gravity="center_horizontal"
+                android:id="@+id/textViewTimer"
+                style="@style/GameInfoTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:text="00:00"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Score" />
+
+            <TextView
+                android:textColor="@color/colorScheme3Medium"
+                android:gravity="center_horizontal"
+                android:id="@+id/textViewScore"
+                style="@style/GameInfoTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

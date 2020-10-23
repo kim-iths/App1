@@ -3,11 +3,13 @@ package com.example.app1.fragments
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.app1.ButtonAdapter
 import com.example.app1.ColorButton
@@ -15,7 +17,7 @@ import com.example.app1.GameActivity
 import com.example.app1.R
 import kotlin.random.Random
 
-class FragmentGame : Fragment(){
+class FragmentGame : Fragment() {
 
     lateinit var grid: GridView
     lateinit var adapter: ButtonAdapter
@@ -25,16 +27,21 @@ class FragmentGame : Fragment(){
 
     //difficulty specific
     var roundsUntilTileIncrease = 0
-    var roundsPerTileIncrease  = 0
+    var roundsPerTileIncrease = 0
     var timeLimitMilliseconds = 0
     var amountLevels = 0
 
+
     var amountToAdd = 3
     var random = 0
+    var lastRandom = 1
     var level = 0
+
+
     var colorDark = 0
     var colorMedium = 0
     var colorLight = 0
+    var colorDifficulty = 0
 
     lateinit var buttonList: MutableList<ColorButton>
 
@@ -60,30 +67,36 @@ class FragmentGame : Fragment(){
         grid.adapter = adapter
 
         val difficulty = context.currentDifficulty
-        when(difficulty){
+        when (difficulty) {
             "easy" -> {
                 amountLevels = 24
                 roundsPerTileIncrease = 2
                 timeLimitMilliseconds = 30000
+                colorDifficulty = R.color.colorScheme3Light
             }
             "medium" -> {
                 amountLevels = 20
                 roundsPerTileIncrease = 1
                 timeLimitMilliseconds = 20000
+                colorDifficulty = R.color.colorScheme4Light
+
             }
             "hard" -> {
                 amountLevels = 20
                 roundsPerTileIncrease = 1
                 timeLimitMilliseconds = 20000
+                colorDifficulty = R.color.colorScheme1Light
+
             }
             else -> return null
         }
 
         difficultyTextView.text = difficulty
+        difficultyTextView.setTextColor(ContextCompat.getColor(context, colorDifficulty))
 
         timerTextView.isCountDown = true
-        timerTextView.setOnChronometerTickListener{
-            if(SystemClock.elapsedRealtime() - it.base >= 1){
+        timerTextView.setOnChronometerTickListener {
+            if (SystemClock.elapsedRealtime() - it.base >= 1) {
                 timerTextView.stop()
                 context.gameOver()
             }
@@ -91,7 +104,6 @@ class FragmentGame : Fragment(){
 
         // Checks whether or not the correct square was pressed
         grid.setOnItemClickListener { adapterView, view, i, l ->
-
             when {
                 level == 0 -> {
                     startTextView.visibility = TextView.GONE
@@ -100,27 +112,30 @@ class FragmentGame : Fragment(){
                     timerTextView.start()
 
                     addTiles()
+                    nextRound()
                     ++level
                 }
                 i == random -> { //Correct tile
-                    if(amountLevels == level + 1){ //When the last tile in this difficulty is pressed
+                    if (amountLevels == level + 1) { //When the last tile in this difficulty is pressed
                         context.level = level + 1
-                        context.time = (timeLimitMilliseconds + ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble()))/1000
-                        context.timeLimitSeconds = timeLimitMilliseconds/1000
+                        context.time =
+                            (timeLimitMilliseconds + ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble())) / 1000
+                        context.timeLimitSeconds = timeLimitMilliseconds / 1000
 
                         context.win()
                     }
                     context.vibrate(50)
                     scoreTextView.text = level.toString()
 
-                    if(roundsUntilTileIncrease == 0) addTiles() else --roundsUntilTileIncrease
+                    if (roundsUntilTileIncrease == 0) addTiles() else --roundsUntilTileIncrease
                     nextRound()
                     ++level
                 }
                 else -> { //Wrong tile
                     context.level = level
-                    context.time = (timeLimitMilliseconds + ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble()))/1000
-                    context.timeLimitSeconds = timeLimitMilliseconds/1000
+                    context.time =
+                        (timeLimitMilliseconds + ((SystemClock.elapsedRealtime() - timerTextView.base).toDouble())) / 1000
+                    context.timeLimitSeconds = timeLimitMilliseconds / 1000
 
                     context.gameOver()
                 }
@@ -134,13 +149,23 @@ class FragmentGame : Fragment(){
     fun nextRound() {
         buttonList[random].color = colorMedium
 
-        random = Random.nextInt(0, grid.numColumns * grid.numColumns)
+        if (level == 0) {
+            random = Random.nextInt(0, 2 * 2)
+        } else {
+            do {
+                random = Random.nextInt(0, grid.numColumns * grid.numColumns)
+                Log.e("FragmentGame", "random: " + random + ", gridColumns: " + grid.numColumns)
+            } while (random == lastRandom)
+        }
+
         buttonList[random].color = colorDark
+
+        lastRandom = random
         adapter.notifyDataSetChanged()
     }
 
-    fun reset(){
-        when(Random.nextInt(0,5)){
+    fun reset() {
+        when (Random.nextInt(0, 5)) {
             0 -> {
                 colorDark = R.color.colorScheme1Dark
                 colorMedium = R.color.colorScheme1Medium
@@ -168,7 +193,6 @@ class FragmentGame : Fragment(){
             }
         }
 
-//        timerActive = false
         timerTextView.base = SystemClock.elapsedRealtime() + timeLimitMilliseconds
         timerTextView.stop()
 
@@ -179,12 +203,13 @@ class FragmentGame : Fragment(){
         random = 0
         scoreTextView.text = "0"
 
-        for(i in 0 until buttonList.size)buttonList.removeLast()
+        for (i in 0 until buttonList.size) buttonList.removeLast()
         buttonList.add(ColorButton(colorDark))
+
         adapter.notifyDataSetChanged()
     }
 
-    fun addTiles(){
+    fun addTiles() {
         ++grid.numColumns
         for (i in 1..amountToAdd) buttonList.add(ColorButton(colorMedium))
         adapter.notifyDataSetChanged()

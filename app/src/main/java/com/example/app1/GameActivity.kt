@@ -60,7 +60,7 @@ class GameActivity : AppCompatActivity(){
         transaction.replace(R.id.container, FragmentWin(), "fragment")
         transaction.commit()
 
-        score = (timeLimitSeconds - time.toInt()) * Math.pow(level.toDouble(), 2.0).toInt()
+        score = ((timeLimitSeconds - time) * Math.pow(level.toDouble(), 2.0)).toInt()
         Log.e("GameActivity", "Time: " +  time + ", Score: " + score)
 
         addHighscore(Highscore(currentPlayer, score, time, currentDifficulty))
