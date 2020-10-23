@@ -1,8 +1,6 @@
 package com.example.app1.fragments
 
-import android.os.Build
-import android.os.Bundle
-import android.os.SystemClock
+import android.os.*
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -84,7 +82,7 @@ class FragmentGame : Fragment() {
             "hard" -> {
                 amountLevels = 20
                 roundsPerTileIncrease = 1
-                timeLimitMilliseconds = 20000
+                timeLimitMilliseconds = 15000
                 colorDifficulty = R.color.colorScheme1Light
 
             }

@@ -11,10 +11,7 @@ import android.view.Window
 import androidx.core.content.ContextCompat
 import com.example.app1.data.HighscoreContract
 import com.example.app1.data.HighscoreCursorAdapter
-import com.example.app1.fragments.FragmentChooseDifficulty
-import com.example.app1.fragments.FragmentChoosePlayer
-import com.example.app1.fragments.FragmentHighscores
-import com.example.app1.fragments.FragmentMainMenu
+import com.example.app1.fragments.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -84,7 +81,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun tutorial(){
-
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, FragmentTutorial(),"fragment")
+        transaction.commit()
     }
 
     fun settings(){

@@ -19,7 +19,7 @@ import com.example.app1.fragments.FragmentGameOver
 import com.example.app1.fragments.FragmentWin
 
 
-class GameActivity : AppCompatActivity(){
+class GameActivity : AppCompatActivity() {
 
     lateinit var currentPlayer: Player
     var level = 0
@@ -54,42 +54,44 @@ class GameActivity : AppCompatActivity(){
         currentPlayerTextView.text = currentPlayer.name
     }
 
-    fun win(){
+    fun win() {
         val transaction = supportFragmentManager.beginTransaction()
 
         transaction.replace(R.id.container, FragmentWin(), "fragment")
         transaction.commit()
 
         score = ((timeLimitSeconds - time) * Math.pow(level.toDouble(), 2.0)).toInt()
-        Log.e("GameActivity", "Time: " +  time + ", Score: " + score)
+        Log.e("GameActivity", "Time: " + time + ", Score: " + score)
 
         addHighscore(Highscore(currentPlayer, score, time, currentDifficulty))
     }
 
-    fun gameOver(){
+    fun gameOver() {
         val transaction = supportFragmentManager.beginTransaction()
 
         transaction.replace(R.id.container, FragmentGameOver(), "fragment")
         transaction.commit()
 
-        score = (timeLimitSeconds - time.toInt()) * Math.pow(level.toDouble(), 1.25).toInt()
+        score = ((timeLimitSeconds - time) * Math.pow(level.toDouble(), 1.25)).toInt()
         addHighscore(Highscore(currentPlayer, score, time, currentDifficulty))
     }
 
-    fun startGame(){
+    fun startGame() {
         val transaction = supportFragmentManager.beginTransaction()
         val fragment = supportFragmentManager.findFragmentByTag("fragment")
 
-        if(fragment != null){
+        if (fragment != null) {
             transaction.replace(R.id.container, FragmentGame(), "fragment")
-        }else{
+        } else {
             transaction.add(R.id.container, FragmentGame(), "fragment")
         }
 
         transaction.commit()
     }
 
-    fun addHighscore(highscore: Highscore){
+    fun addHighscore(highscore: Highscore) {
+        if (highscore.score == 0) return
+
         val values = ContentValues()
         values.put(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME, highscore.player.name)
         values.put(HighscoreContract.HighscoresEntry.COLUMN_SCORE, highscore.score)
@@ -99,11 +101,13 @@ class GameActivity : AppCompatActivity(){
         contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI, values)
     }
 
-    fun vibrate(amountMs: Long){
+    fun vibrate(amountMs: Long) {
         if (Build.VERSION.SDK_INT >= 26) {
-            vibrator.vibrate(VibrationEffect.createOneShot(amountMs, VibrationEffect.DEFAULT_AMPLITUDE))
+            vibrator.vibrate(
+                VibrationEffect.createOneShot(amountMs, VibrationEffect.DEFAULT_AMPLITUDE)
+            )
         } else {
             vibrator.vibrate(amountMs)
+        }
     }
-}
 }

@@ -47,7 +47,7 @@ class FragmentMainMenu : Fragment(){
 
         highscoresButton.setOnClickListener { context.highscores() }
 
-        tutorialButton.setOnClickListener { }
+        tutorialButton.setOnClickListener { context.tutorial() }
 
         settingsButton.setOnClickListener { }
 
