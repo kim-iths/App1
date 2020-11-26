@@ -22,8 +22,17 @@ class HighscoresAdapter(context: Context, val highscores: MutableList<Highscore>
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
         val view = inflater.inflate(R.layout.list_item_highscore, null, false)
 
+        val playerTextView = view.findViewById<TextView>(R.id.textViewPlayer)
         val scoreTextView = view.findViewById<TextView>(R.id.textViewScore)
-        scoreTextView.text = highscores[p0].score.toString()
+        val timeTextView = view.findViewById<TextView>(R.id.textViewTime)
+
+        val name = highscores[p0].name
+        val score = highscores[p0].score
+        val time = highscores[p0].time
+
+        playerTextView.text = name
+        scoreTextView.text = score.toString()
+        timeTextView.text = time.toString()
 
         return view
     }

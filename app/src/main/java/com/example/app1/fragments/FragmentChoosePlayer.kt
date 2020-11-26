@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
+import androidx.room.Room
 import com.example.app1.MainActivity
 import com.example.app1.Player
 import com.example.app1.PlayerListAdapter
@@ -20,10 +22,21 @@ import com.example.app1.R
 import com.example.app1.data.HighscoreContract
 import com.example.app1.data.HighscoreCursorAdapter
 import com.example.app1.data.PlayerCursorAdapter
+import com.example.app1.room.AppDatabase
+import com.example.app1.room.AppDatabasePlayers
 import kotlinx.android.synthetic.main.fragment_highscores.*
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class FragmentChoosePlayer : Fragment(), LoaderManager.LoaderCallbacks<Cursor>{
+class FragmentChoosePlayer : Fragment(), LoaderManager.LoaderCallbacks<Cursor>, CoroutineScope{
 
+    lateinit var playerAdaper: PlayerListAdapter
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+    private lateinit var db: AppDatabasePlayers
+
+    val playerList = mutableListOf<Player>()
     lateinit var mPlayerCursorAdapter: PlayerCursorAdapter
     lateinit var context: MainActivity
 
@@ -35,8 +48,15 @@ class FragmentChoosePlayer : Fragment(), LoaderManager.LoaderCallbacks<Cursor>{
         val view = inflater.inflate(R.layout.fragment_choose_player, container, false)
 
         context = (activity as MainActivity)
-        mPlayerCursorAdapter = PlayerCursorAdapter(context, null)
-        loaderManager.initLoader(0, null, this)
+
+        //Room
+        job = Job()
+        db = Room.databaseBuilder(context, AppDatabasePlayers::class.java, "players")
+            .fallbackToDestructiveMigration()
+            .build()
+
+//        mPlayerCursorAdapter = PlayerCursorAdapter(context, null)
+//        loaderManager.initLoader(0, null, this)
 
         val backButton = view.findViewById<TextView>(R.id.buttonBack)
         val addPlayerButton = view.findViewById<ImageView>(R.id.buttonAddPlayer)
@@ -45,22 +65,25 @@ class FragmentChoosePlayer : Fragment(), LoaderManager.LoaderCallbacks<Cursor>{
         val outside1 = view.findViewById<LinearLayout>(R.id.outsideView1)
 
 
-        playerListView.adapter = mPlayerCursorAdapter
-//        val listAdaper = PlayerListAdapter(context, context.playerList)
-//        playerListView.adapter = listAdaper
+//        playerListView.adapter = mPlayerCursorAdapter
+        playerAdaper = PlayerListAdapter(context, playerList)
+        playerListView.adapter = playerAdaper
 
         backButton.setOnClickListener { returnToMainMenu() }
         addPlayerButton.setOnClickListener { addPlayer() }
         playerListView.setOnItemClickListener { adapterView, view, i, l ->
-            val currentPlayer = mPlayerCursorAdapter.cursor.getString(mPlayerCursorAdapter.cursor.getColumnIndex("name"))
+//            val currentPlayer = mPlayerCursorAdapter.cursor.getString(mPlayerCursorAdapter.cursor.getColumnIndex("name"))
 
-            context.currentPlayer = Player(currentPlayer)
+            val currentPlayer = playerList[i].name
+            context.currentPlayer = Player(0, currentPlayer)
 //            context.currentPlayer = context.playerList[i]
             returnToMainMenu()
         }
 
         outside0.setOnClickListener { returnToMainMenu() }
         outside1.setOnClickListener { returnToMainMenu() }
+
+        getPlayers()
 
         return view
     }
@@ -87,11 +110,17 @@ class FragmentChoosePlayer : Fragment(), LoaderManager.LoaderCallbacks<Cursor>{
     }
 
     fun addPlayer(name: String){
-        val values = ContentValues()
-        values.put(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME, name)
+        launch(Dispatchers.IO) {
+            db.playerDao().insert(Player(0, name))
+            getPlayers()
+        }
 
-        val uri: Uri? = context.contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI_PLAYERS, values)
-        loaderManager.restartLoader(0,null,this)
+
+//        val values = ContentValues()
+//        values.put(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME, name)
+
+//        val uri: Uri? = context.contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI_PLAYERS, values)
+//        loaderManager.restartLoader(0,null,this)
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
@@ -109,4 +138,24 @@ class FragmentChoosePlayer : Fragment(), LoaderManager.LoaderCallbacks<Cursor>{
     override fun onLoaderReset(loader: Loader<Cursor>) {
         mPlayerCursorAdapter.swapCursor(null)
     }
+
+    fun getPlayers(){
+        val list = loadAllPlayers()
+
+        GlobalScope.launch(Dispatchers.Main) {
+            if(playerList.size > 0) playerList.clear()
+
+            val players = list.await()
+            for(player in players) {
+                playerList.add(player)
+                Log.e("!!!", "highscore: $player")
+            }
+            playerAdaper.notifyDataSetChanged()
+        }
+    }
+
+    fun loadAllPlayers() : Deferred<List<Player>> =
+        async(Dispatchers.IO) {
+            db.playerDao().getAll()
+        }
 }

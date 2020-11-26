@@ -9,11 +9,24 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import androidx.core.content.ContextCompat
+import androidx.room.Room
 import com.example.app1.data.HighscoreContract
 import com.example.app1.data.HighscoreCursorAdapter
 import com.example.app1.fragments.*
+import com.example.app1.room.AppDatabase
+import com.example.app1.room.AppDatabasePlayers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope {
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+    private lateinit var db: AppDatabasePlayers
 
     lateinit var currentPlayer: Player
     lateinit var shared: SharedPreferences
@@ -22,10 +35,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Room
+        job = Job()
+        db = Room.databaseBuilder(applicationContext, AppDatabasePlayers::class.java, "players")
+            .fallbackToDestructiveMigration()
+            .build()
+
         this.window.statusBarColor = ContextCompat.getColor(this, R.color.colorScheme2Dark)
         shared = getSharedPreferences("firstLaunch", MODE_PRIVATE)
         if(shared.getBoolean("firstLaunch", true)) firstLaunch()
-        currentPlayer = Player("Guest")
+        currentPlayer = Player(0, "Guest")
 
         supportActionBar?.hide()
         val transaction = supportFragmentManager.beginTransaction()
@@ -66,10 +85,13 @@ class MainActivity : AppCompatActivity() {
     fun settings(){}
 
     fun firstLaunch(){
-        val values = ContentValues()
-        values.put(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME, "Guest")
+        launch(Dispatchers.IO) {
+            db.playerDao().insert(Player(0, "Guest"))
+        }
 
-        contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI_PLAYERS, values)
+//        val values = ContentValues()
+//        values.put(HighscoreContract.HighscoresEntry.COLUMN_PLAYER_NAME, "Guest")
+//        contentResolver.insert(HighscoreContract.HighscoresEntry.CONTENT_URI_PLAYERS, values)
 
         val editor = shared.edit()
         editor.putBoolean("firstLaunch", false)

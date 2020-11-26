@@ -2,6 +2,7 @@ package com.example.app1.fragments
 
 import android.database.Cursor
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +12,26 @@ import androidx.fragment.app.Fragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
+import androidx.room.Room
+import com.example.app1.Highscore
 import com.example.app1.MainActivity
 import com.example.app1.R
 import com.example.app1.data.HighscoreContract
 import com.example.app1.data.HighscoreCursorAdapter
+import com.example.app1.room.AppDatabase
+import kotlinx.coroutines.*
 import java.lang.IllegalArgumentException
+import kotlin.coroutines.CoroutineContext
 
-class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
+class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor>, CoroutineScope {
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+    private lateinit var db: AppDatabase
+
+    val highscoresList = mutableListOf<Highscore>()
+    lateinit var highscoresAdapter: HighscoresAdapter
 
     lateinit var mHighscoreCursorAdapter: HighscoreCursorAdapter
 
@@ -35,11 +49,18 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_highscores, container, false)
-
-
         context = (activity as MainActivity)
-        mHighscoreCursorAdapter = HighscoreCursorAdapter(context, null)
-        loaderManager.initLoader(0, null, this)
+
+        //Room
+        job = Job()
+        db = Room.databaseBuilder(context, AppDatabase::class.java, "highscores")
+            .fallbackToDestructiveMigration()
+            .build()
+
+        highscoresAdapter = HighscoresAdapter(context, highscoresList)
+
+//        mHighscoreCursorAdapter = HighscoreCursorAdapter(context, null)
+//        loaderManager.initLoader(0, null, this)
 
         val backButton = view.findViewById<TextView>(R.id.buttonBack)
         buttonShowEasy = view.findViewById(R.id.buttonShowScoresEasy)
@@ -48,9 +69,9 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
         val listHighscores = view.findViewById<ListView>(R.id.listViewHighscores)
         listHighscores.emptyView = view.findViewById(R.id.emptyView)
-        listHighscores.adapter = mHighscoreCursorAdapter
+//        listHighscores.adapter = mHighscoreCursorAdapter
+        listHighscores.adapter = highscoresAdapter
 
-        //listHighscores.adapter = HighscoresAdapter(context, context.highscores)
 
         val outside0 = view.findViewById<LinearLayout>(R.id.outsideView0)
         val outside1 = view.findViewById<LinearLayout>(R.id.outsideView1)
@@ -59,13 +80,11 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         buttonShowMedium.setOnClickListener { showScores("medium") }
         buttonShowHard.setOnClickListener { showScores("hard") }
 
-
         backButton.setOnClickListener { returnToMainMenu() }
         outside0.setOnClickListener { returnToMainMenu() }
         outside1.setOnClickListener { returnToMainMenu() }
 
         showScores("easy")
-
 
         return view
     }
@@ -91,7 +110,7 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                 buttonShowEasy.background.setTint(ResourcesCompat.getColor(resources,R.color.colorScheme3Light, null))
                 buttonShowEasy.isEnabled = false
 
-                loaderManager.restartLoader(0, null, this)
+//                loaderManager.restartLoader(0, null, this)
             }
             "medium" -> {
                 currentDifficulty = "medium"
@@ -100,7 +119,7 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                 buttonShowMedium.background.setTint(ResourcesCompat.getColor(resources,R.color.colorScheme4Light, null))
                 buttonShowMedium.isEnabled = false
 
-                loaderManager.restartLoader(0, null, this)
+//                loaderManager.restartLoader(0, null, this)
             }
             "hard" -> {
                 currentDifficulty = "hard"
@@ -109,10 +128,25 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                 buttonShowHard.background.setTint(ResourcesCompat.getColor(resources,R.color.colorScheme1Light, null))
                 buttonShowHard.isEnabled = false
 
-                loaderManager.restartLoader(0, null, this)
-
+//                loaderManager.restartLoader(0, null, this)
             }
         }
+
+        val list = loadByDifficulty(currentDifficulty)
+
+        GlobalScope.launch(Dispatchers.Main) {
+            if(highscoresList.size > 0) highscoresList.clear()
+
+            val highscores = list.await()
+            for(highscore in highscores) {
+                highscoresList.add(highscore)
+                Log.e("!!!", "highscore: $highscore")
+            }
+            highscoresAdapter.notifyDataSetChanged()
+        }
+
+
+
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
@@ -135,8 +169,6 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
         return CursorLoader(context, HighscoreContract.HighscoresEntry.CONTENT_URI, projection, selection, selectionArgs,
         HighscoreContract.HighscoresEntry.COLUMN_SCORE + " DESC")
-
-
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
@@ -146,6 +178,12 @@ class FragmentHighscores : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     override fun onLoaderReset(loader: Loader<Cursor>) {
         mHighscoreCursorAdapter.swapCursor(null)
     }
+
+
+    fun loadByDifficulty(difficulty: String) : Deferred<List<Highscore>> =
+        async(Dispatchers.IO) {
+            db.highscoreDao().findByDifficulty(difficulty)
+        }
 
 
 }
